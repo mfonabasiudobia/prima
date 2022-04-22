@@ -1,0 +1,65 @@
+export const Data = [
+	
+	{
+		name : "Tienda de Ropa Yanuy",
+		province : "San Borija",
+		city : "Lima",
+		phone : "201234567989",
+		RUC : "",
+		socialInstagram : "",
+		socialFacebook : "",
+		urlImageBackground : "images/bg/vibra.png",
+	},
+	{
+		name : "Tienjdjdda de Ropa Yanuy",
+		province : "San Borija",
+		city : "Uima",
+		phone : "201234567989",
+		RUC : "",
+		socialInstagram : "",
+		socialFacebook : "",
+		urlImageBackground : "images/bg/vibra.png",
+	},
+	{
+		name : "Tjwienda de Ropa Yanuy",
+		province : "San Borija",
+		city : "Lema",
+		phone : "201234567989",
+		RUC : "",
+		socialInstagram : "",
+		socialFacebook : "",
+		urlImageBackground : "images/bg/vibra.png",
+	},
+	{
+		name : "Wienda de Ropa Yanuy",
+		province : "San Borija",
+		city : "Aima",
+		phone : "201234567989",
+		RUC : "",
+		socialInstagram : "",
+		socialFacebook : "",
+		urlImageBackground : "images/bg/vibra.png",
+	},
+	{
+		name : "Qienda de Ropa Yanuy",
+		province : "San Borija",
+		city : "Pima",
+		phone : "201234567989",
+		RUC : "",
+		socialInstagram : "",
+		socialFacebook : "",
+		urlImageBackground : "images/bg/vibra.png",
+	},
+	{
+		name : "Pienda de Ropa Yanuy",
+		province : "San Borija",
+		city : "Wima",
+		phone : "201234567989",
+		RUC : "",
+		socialInstagram : "",
+		socialFacebook : "",
+		urlImageBackground : "images/bg/vibra.png",
+	}
+
+	
+]

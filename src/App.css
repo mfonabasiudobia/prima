@@ -1,0 +1,80 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,600;0,700;0,800;0,900;1,100;1,500;1,600;1,700;1,800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    @apply transition-all duration-100;
+}
+
+body {
+     @apply font-['Inter'] text-gray-900 overflow-hidden;
+}
+
+input[type="checkbox"]:checked ~ svg  {
+    @apply block;
+}
+
+@layer components {
+
+  .container {
+    @apply md:w-[1100px] mx-auto px-5 
+  }
+
+  .btn:hover {
+    @apply opacity-80;
+  }
+
+  .page-wrapper {
+    @apply relative h-[100vh] overflow-x-hidden overflow-y-auto;
+  }
+
+
+  .form-control {
+    @apply w-full border resize-none border-stone-200 focus:outline-0  text-gray-900 rounded-lg px-2 py-2 focus:border-blue-900 ;
+  }
+
+    select {
+      @apply bg-white appearance-none;
+    }
+
+    .form-group {
+      @apply relative z-20;
+    }
+
+    .form-group svg {
+      @apply bottom-3 text-lg font-bold right-3 absolute text-orange-500;
+    }
+
+    .form-group label {
+      @apply text-sm
+    }
+
+    
+
+  .modal-wrapper {
+    @apply overflow-x-hidden overflow-auto fixed top-0 h-full w-full left-0
+  }
+
+  .modal-inner-wrapper {
+    @apply relative z-[300] flex items-center justify-center min-h-full w-full p-5 after:bg-white after:content-[''] after:absolute after:top-0 after:left-0 after:h-full after:w-full after:opacity-50;
+  }
+
+  .modal-body {
+    @apply rounded-xl bg-white  relative z-[200] md:w-[70%] space-y-5; 
+  }
+  
+  .hide-modal {
+    @apply opacity-0 -z-50;
+  }
+
+  .show-modal {
+    @apply opacity-100 z-[300];
+  }
+
+  .error {
+    @apply text-xs text-red-600
+  }
+  
+}
