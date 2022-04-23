@@ -28,7 +28,6 @@ const Contact = () => {
       	is : true,
       	then : yup.string().required("This field is required")
       }),
-      // ['item7'] : yup.string().required().min(50).oneOf([yup.ref('confirmPassword')], 'Your passwords do not match'),
       ['item8'] : yup.string().required(),
       ['item9'] : yup.string().required(),
       ['item10'] : yup.string().required(),
@@ -36,7 +35,16 @@ const Contact = () => {
       ['item12'] : yup.string().required(),
       ['item13'] : yup.string().required(),
       ['item14'] : yup.string().required(),
-      ['phoneNumber'] : yup.string().required().min(9),
+      ['item15'] : yup.string().required(),
+      ['item16'] : yup.string().required(),
+      ['item17'] : yup.string().required(),
+      ['item18'] : yup.string().required(),
+      ['item19'] : yup.string().required(),
+      ['item20'] : yup.string().required(),
+      ['item21'] : yup.string().required(),
+      ['item22'] : yup.string().required().min(2000),
+      ['item23'] : yup.string().required().min(2000),
+      ['item24'] : yup.number().required().min(9),
       ['email'] : yup.string().required().email(),
      })
 
@@ -221,70 +229,91 @@ const Contact = () => {
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item15')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						<p className="error">{errors['item15']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<select className="form-control" placeholder="Nombers">
+						<BsChevronDown />
+						<select 
+							{...register('item16')}
+							className="form-control" placeholder="Nombers">
 							<option>Nombers</option>
 						</select>
+						<p className="error">{errors['item16']?.message}</p>
+					</div>
+
+					<div className="form-group">
+						<input 
+							{...register('item17')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						<p className="error">{errors['item17']?.message}</p>
+					</div>
+
+					<div className="form-group">
 						<BsChevronDown />
-					</div>
-
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
-					</div>
-
-					<div className="form-group">
-						<select className="form-control" placeholder="Nombers">
+						<select 
+							{...register('item18')}
+							className="form-control" placeholder="Nombers">
 							<option>Nombers</option>
 						</select>
-						<BsChevronDown />
+						<p className="error">{errors['item18']?.message}</p>
 					</div>
 
 
 					<div className="form-group">
-						<select className="form-control" placeholder="Nombers">
+						<BsChevronDown />
+						<select 
+							{...register('item19')}
+							className="form-control" placeholder="Nombers">
 							<option>Nombers</option>
 						</select>
-						<BsChevronDown />
+						<p className="error">{errors['item19']?.message}</p>
 					</div>
 
 
 					<div className="form-group">
-						<select className="form-control" placeholder="Nombers">
+						<BsChevronDown />
+						<select 
+							{...register('item20')}
+							className="form-control" placeholder="Nombers">
 							<option>Nombers</option>
 						</select>
-						<BsChevronDown />
+						<p className="error">{errors['item20']?.message}</p>
 					</div>
 
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
-					</div>
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
-					</div>
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+					<div className="form-group md:col-span-2">
+						<input type="text" {...register('item21')} className="form-control" placeholder="Nombers" />
+						<p className="error">{errors['item21']?.message}</p>
 					</div>
 
 					<div className={`${styles.spanAll}`}>
-						<textarea className="form-control" placeholder="Description" rows={5}></textarea>
+						<textarea 
+						{...register('item22')}
+						className="form-control" placeholder="Description" rows={5}></textarea>
+						<p className="error">{errors['item22']?.message}</p>
 					</div>
 
 					<div className={`${styles.spanAll}`}>
-						<textarea className="form-control" placeholder="Description" rows={5}></textarea>
+						<textarea 
+							{...register('item23')}
+							className="form-control" placeholder="Description" rows={5}></textarea>
+							<p className="error">{errors['item23']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
-					</div>
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item24')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+							<p className="error">{errors['item24']?.message}</p>
 					</div>
 
 					<div className="form-group">
