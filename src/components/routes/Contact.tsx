@@ -42,9 +42,9 @@ const Contact = () => {
       ['item19'] : yup.string().required(),
       ['item20'] : yup.string().required(),
       ['item21'] : yup.string().required(),
-      ['item22'] : yup.string().required().min(2000),
-      ['item23'] : yup.string().required().min(2000),
-      ['item24'] : yup.number().required().min(9),
+      ['item22'] : yup.string().required().max(2000),
+      ['item23'] : yup.string().required().max(2000),
+      ['item24'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
       ['email'] : yup.string().required().email(),
      })
 
