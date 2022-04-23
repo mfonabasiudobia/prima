@@ -13,8 +13,9 @@ const Pagination = ({ total, setCurrentPage, currentPage } : any) => {
 
   const pages = Math.ceil(total / 6);
 
-  return (
-        <div className={styles.pagination}>
+  if(total > 0){
+    return (
+        <div className={`${styles.pagination}`}>
             <button 
               onClick={() => setCurrentPage(currentPage == 0 ? 0 : --currentPage)} 
               className={`${styles.arrowBtn}`}>
@@ -34,6 +35,10 @@ const Pagination = ({ total, setCurrentPage, currentPage } : any) => {
             </button>
       </div>
   )
+  }else {
+    return <h1 className="text-center pb-5">No Items found</h1>
+  }
+  
 }
 
 export default Pagination

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { MdLocationOn } from "react-icons/md";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import Details from "./service/Details";
@@ -23,7 +23,7 @@ const styles = {
 	advertRightTitle : `text-xl font-bold`,
 	advertRightParagraph : `text-sm font-light`,
 	sectionTitle : `text-xl text-orange-500 font-bold text-center`,
-	sectionNavItem : `rounded  whitespace-nowrap hover:bg-orange-500 hover:text-white font-medium py-2 px-7 border border-orange-500`,
+	sectionNavItem : `snap-center rounded  whitespace-nowrap hover:bg-orange-500 hover:text-white font-medium py-2 px-7 border border-orange-500`,
 	sectionNavArrow : `text-orange-500 py-5 font-bold`
 
 }
@@ -33,7 +33,28 @@ const Service = (props : any) => {
 	const [data, setData ] = useState<any>({ selected : 0, isDescOpen : false, isContactOpen : false });
 	const [details, setDetails] = useState<any>({});
 	const [category, setCategory] = useState<number>(0);
+	const [prevCategory, setPrevCategory] = useState<number>(0);
+
 	const [currentPage, setCurrentPage] = useState<number>(0);
+
+	const catNav = useRef<any>();
+
+	 useEffect(() => {
+    		
+    	if(prevCategory < category)
+	    		catNav.current.scrollLeft += (categories[category].title.length*8);
+	    else 
+	    		catNav.current.scrollLeft -= (categories[category].title.length*8);
+
+	    setPrevCategory(category);
+	 
+
+	  },[category])
+
+	 const filterCards = (data)  =>  {
+	 	return data.filter((item) => item.category_id === categories[category].id);
+	 }
+	 
 	
 
 	return (
@@ -47,29 +68,31 @@ const Service = (props : any) => {
 
 				<div className="flex justify-center items-center space-x-3 py-7">
 					<button 
+							onClick={() => setCategory(category == 0 ? 0 : category - 1)} 
 							className={`${styles.sectionNavArrow}`}>
 							<BsChevronLeft size={20} />
 					</button>
-					<div className='overflow-x-auto flex items-center space-x-3'>
+					<div className='overflow-x-auto flex items-center space-x-3 scroll-smooth snap-mandatory snap-x' ref={catNav}>
 						{categories.map((item, index) => 
 							<button 
 								onClick={() => setCategory(index)}
 								key={index} 
 								className={`${styles.sectionNavItem} ${index == category ? styles.activePaginationButton : 'text-orange-500'}`}>
-								{item}
+								{item.title}
 							</button>
 						)}
 					</div>
 					<button 
+							onClick={() => setCategory(category == categories.length - 1 ? category : category + 1)} 
 							className={`${styles.sectionNavArrow}`}>
 							<BsChevronRight size={20} />
 					</button>
 				</div>
 			</header>
 			<div className="container grid md:grid-cols-3 gap-5">
-				{Data.slice(currentPage*6).map((item,index) => index < 6 &&
+				{filterCards(Data).slice(currentPage*6).map((item,index) => index < 6 &&
 					<div className={styles.item} key={index}>
-						<img src="/images/bg/vibra.png" className={styles.image} />
+						<img src={item.urlImageBackground} className={styles.image} />
 						<section className={styles.body}>
 							<header>
 								<h1 className={styles.title}>{item.name}</h1>
@@ -102,7 +125,7 @@ const Service = (props : any) => {
 
 			    <Pagination
 	                setCurrentPage={(value : number) => setCurrentPage(value)}
-	                total={Data.length}
+	                total={filterCards(Data).length}
 	                currentPage={currentPage} />
 
 			<div className={styles.advert}>

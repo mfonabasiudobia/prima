@@ -9,9 +9,9 @@ import { MdLocationOn } from "react-icons/md";
 
 const styles = {
     wrapper : `shadow-xl`,
-    topHeader : `bg-intro`,
+    topHeader : `relative`,
     container : `relative h-[40vh]`,
-    cancel : `w-10 h-10 p-1 shadow-xl rounded-full absolute right-5 top-5 bg-white text-red-500 flex items-center justify-center`,
+    cancel : `z-10 w-10 h-10 p-1 shadow-xl rounded-full absolute right-5 top-5 bg-white text-red-500 flex items-center justify-center`,
     body: `p-5 md:p-10 space-y-3`,
     bodyHeader : `flex justify-between items-start`,
     title : `text-xl font-bold text-orange-500`,
@@ -19,7 +19,7 @@ const styles = {
     footer : `text-sm space-y-5`,
     footerHeader : `flex items-center space-x-7`,
     footerTitle :   ` font-bold `,
-    location : `bg-green-200 px-2 shadow-xl py-2 font-light text-white text-left rounded-lg text-sm flex items-center justify-center space-x-3 absolute  bottom-5 left-5`,
+    location : `z-10 bg-green-200 px-2 shadow-xl py-2 font-light text-white text-left rounded-lg text-sm flex items-center justify-center space-x-3 absolute  bottom-5 left-5`,
     locationName :  `font-bold`
 }
 
@@ -47,12 +47,14 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                                 </div>
                          </button>
                       </div>
+
+                      <img src={details.urlImageBackground} className="absolute top-0 left-0 w-full h-full object-cover z-0" />
                   </section>
 
                       <section className={styles.body}>
                           
                         <header className={styles.bodyHeader}>
-                                <h1 className={styles.title}>Tienda de Ropa Yanuy</h1>
+                                <h1 className={styles.title}>{details.name}</h1>
                                 <div className="flex items-center space-x-2 font-semibold">
                                     <BsWhatsapp size={20} className="text-green-500" />
                                     <span>{details.phone}</span>
