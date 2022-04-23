@@ -1,6 +1,9 @@
 import React from 'react'
 import { NavLink } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
@@ -12,6 +15,40 @@ const styles = {
 }
 
 const Contact = () => {
+
+	const schema = yup.object().shape({
+      ['item1'] : yup.string().required().max(50),
+      ['item2'] : yup.string().required().max(50),
+      ['item3'] : yup.string().required().max(50),
+      ['item4'] : yup.string().required(),
+      ['item5'] : yup.string().required().max(8),
+      ['item6'] : yup.string().required().max(9),
+      ['question'] : yup.boolean().required(),
+      ['item7'] : yup.string().when(['question'], {
+      	is : true,
+      	then : yup.string().required("This field is required")
+      }),
+      // ['item7'] : yup.string().required().min(50).oneOf([yup.ref('confirmPassword')], 'Your passwords do not match'),
+      ['item8'] : yup.string().required(),
+      ['item9'] : yup.string().required(),
+      ['item10'] : yup.string().required(),
+      ['item11'] : yup.string().required(),
+      ['item12'] : yup.string().required(),
+      ['item13'] : yup.string().required(),
+      ['item14'] : yup.string().required(),
+      ['phoneNumber'] : yup.string().required().min(9),
+      ['email'] : yup.string().required().email(),
+     })
+
+      const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver : yupResolver(schema)
+      });
+
+
+      const handleForm = () => {
+
+      }
+
 	return (
 		<section className="py-7 rounded-3xl bg-white mr-5 md:mr-10 shadow-xl relative -top-12">
 			<div className={styles.wrapper}>
@@ -22,82 +59,160 @@ const Contact = () => {
                                 <p>Tu dinero acumulado sigue generando la rentabilidad Una alternativa diferente de ahorro e inversión, con objetivos</p>
                          </header>
 
-				<form className={styles.form}>
+				<form className={styles.form} onSubmit={handleSubmit(handleForm)}>
 					<div className={styles.formHeader}>
 						Tu dinero acumulado sigue
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item1')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item1']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item2')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item2']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item3')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item3']?.message}</p>
 					</div>
 
+
 					<div className="form-group">
-						<select className="form-control" placeholder="Nombers">
+						<BsChevronDown />
+						<select 
+							{...register('item4')}
+							className="form-control"
+							 placeholder="Nombers">
 							<option>Nombers</option>
 						</select>
-						<BsChevronDown />
+						 <p className="error">{errors['item3']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item5')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item5']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item6')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item6']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('email')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['email']?.message}</p>
 					</div>
 
 					<div className={styles.formHeader}>
 						Tu dinero acumulado sigue
+					</div>	
+
+					<div  className={`${styles.spanAll} flex items-center space-x-2`}>
+						<span>dinero acumulado sigue?</span> 
+						<label>Yes</label>
+						<input type="radio" value={1} {...register('question')} className="accent-orange-500" name="question" />
+						<label>No</label> 
+						<input type="radio" value={0} {...register('question')} className="accent-orange-500" name="question" /> 
 					</div>
 
 					<div className="form-group ">
-						<select className="form-control" placeholder="Nombers">
+						<BsChevronDown />
+						<select {...register('item7')} className="form-control" placeholder="Nombers">
+							<option value="">Nombers</option>
+						</select>
+						 <p className="error">{errors['item7']?.message}</p>
+					</div>
+
+					<div className="form-group">
+						<input 
+							{...register('item8')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item8']?.message}</p>
+					</div>
+
+					<div className="form-group">
+						<input 
+							{...register('item9')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item9']?.message}</p>
+					</div>
+
+					<div className="form-group">
+						<input 
+							{...register('item10')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item10']?.message}</p>
+					</div>
+
+					<div className="form-group">
+						<BsChevronDown />
+						<select 
+							{...register('item11')}
+							className="form-control" 
+							placeholder="Nombers">
 							<option>Nombers</option>
 						</select>
-						<BsChevronDown />
-					</div>
-
-					<div className="form-group col-start-1">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<p className="error">{errors['item11']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item12')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item12']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item13')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item13']?.message}</p>
 					</div>
 
 					<div className="form-group">
-						<select className="form-control" placeholder="Nombers">
-							<option>Nombers</option>
-						</select>
-						<BsChevronDown />
-					</div>
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
-					</div>
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
-					</div>
-
-					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							{...register('item14')}
+							type="text" 
+							className="form-control" 
+							placeholder="Nombers" />
+						 <p className="error">{errors['item14']?.message}</p>
 					</div>
 
 
@@ -173,11 +288,17 @@ const Contact = () => {
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							type="text" 
+							className="form-control" 
+							placeholder="URL Instagram" />
 					</div>
 
 					<div className="form-group">
-						<input type="text" className="form-control" placeholder="Nombers" />
+						<input 
+							type="text" 
+							className="form-control" 
+							placeholder="URL Facebook" />
 					</div>
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
@@ -191,7 +312,7 @@ const Contact = () => {
 					</div>
 
 					 <div className={`${styles.spanAll} flex justify-end items-center`}>
-                            <button className={styles.submit}>
+                            <button type="submit" className={styles.submit}>
                                 Register mi negocio
                           	</button>
                       </div>

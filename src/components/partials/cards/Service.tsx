@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { MdLocationOn } from "react-icons/md";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import Details from "./service/Details";
 import OpenContact from "./advert/OpenContact";
 import { Data } from "../../../data/cards";
+import { categories } from "../../../data/categories";
+import Pagination from "../Pagination";
 
 const styles = {
 	title : `text-xl font-bold group-hover:text-orange-500`,
@@ -13,10 +15,7 @@ const styles = {
 	button : `rounded-xl text-orange-500 group-hover:bg-orange-500 group-hover:text-white font-bold py-2 px-7 border-2 border-orange-500`,
 	item : `rounded-2xl shadow-xl group overflow-hidden hover:border hover:border-orange-500`,
 	image : `h-[20vh] object-cover w-full`,
-	pagination : `flex justify-center items-center space-x-3 py-12`,
-	paginationButton : `w-8 h-8 rounded flex items-center justify-center`,
 	activePaginationButton : `bg-orange-500 text-white`,
-	inactivePaginationButton : `bg-gray-100 hover:bg-orange-500 hover:text-white `,
 	arrowBtn : `text-gray-500 hover:text-orange-500`,
 	advert : `bg-gradient-to-r from-orange-500 to-orange-400 flex items-center container rounded-xl`,
 	advertBtn : `rounded-xl text-orange-500 bg-white font-bold py-2 px-7`,
@@ -34,6 +33,8 @@ const Service = (props : any) => {
 	const [data, setData ] = useState<any>({ selected : 0, isDescOpen : false, isContactOpen : false });
 	const [details, setDetails] = useState<any>({});
 	const [category, setCategory] = useState<number>(0);
+	const [currentPage, setCurrentPage] = useState<number>(0);
+	
 
 	return (
 		<>
@@ -50,7 +51,7 @@ const Service = (props : any) => {
 							<BsChevronLeft size={20} />
 					</button>
 					<div className='overflow-x-auto flex items-center space-x-3'>
-						{["Todo", "Calzado","Comidas y postres","Decoraciones y fiestas","Florerias","Joyeria y artesania"].map((item, index) => 
+						{categories.map((item, index) => 
 							<button 
 								onClick={() => setCategory(index)}
 								key={index} 
@@ -66,7 +67,7 @@ const Service = (props : any) => {
 				</div>
 			</header>
 			<div className="container grid md:grid-cols-3 gap-5">
-				{Data.map((item,index) => 
+				{Data.slice(currentPage*6).map((item,index) => index < 6 &&
 					<div className={styles.item} key={index}>
 						<img src="/images/bg/vibra.png" className={styles.image} />
 						<section className={styles.body}>
@@ -99,23 +100,10 @@ const Service = (props : any) => {
 				)}
 			</div>
 
-			<div className={styles.pagination}>
-						<button 
-							className={`${styles.arrowBtn}`}>
-							<BsChevronLeft size={20} />
-						</button>
-				{[1,2,3,4,5,6,7,8,9].map((item, index) => 
-						<button 
-							key={index} 
-							className={`${styles.paginationButton} ${item == 1 ? styles.activePaginationButton : styles.inactivePaginationButton}`}>
-							{item}
-						</button>
-					)}
-						<button 
-							className={`${styles.arrowBtn}`}>
-							<BsChevronRight size={20} />
-						</button>
-			</div>
+			    <Pagination
+	                setCurrentPage={(value : number) => setCurrentPage(value)}
+	                total={Data.length}
+	                currentPage={currentPage} />
 
 			<div className={styles.advert}>
 				<div>

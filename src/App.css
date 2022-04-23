@@ -44,7 +44,7 @@ input[type="checkbox"]:checked ~ svg  {
     }
 
     .form-group svg {
-      @apply bottom-3 text-lg font-bold right-3 absolute text-orange-500;
+      @apply top-3 text-lg font-bold right-3 absolute text-orange-500;
     }
 
     .form-group label {

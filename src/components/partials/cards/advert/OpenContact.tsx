@@ -10,7 +10,7 @@ import { MdLocationOn } from "react-icons/md";
 const styles = {
     wrapper : `shadow-xl relative p-5 py-7`,
     cancel : `w-10 h-10 p-1 shadow-xl rounded-full absolute right-5 top-5 bg-white text-red-500 flex items-center justify-center`,
-    body: `p-5 md:p-10 space-y-5`,
+    body: `py-5 md:p-10 space-y-5`,
     bodyHeader : ``,
     title : `text-xl font-bold`,
     headerDescription : ``,
