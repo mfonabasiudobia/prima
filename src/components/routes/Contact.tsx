@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+// import location from "ubigeo-peru";
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
@@ -15,6 +16,12 @@ const styles = {
 }
 
 const Contact = () => {
+
+	useEffect(() => {
+		// alert(JSON.stringify(location))
+	},[])
+
+	const url =  /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 
 	const schema = yup.object().shape({
       ['item1'] : yup.string().required().max(50),
@@ -47,6 +54,7 @@ const Contact = () => {
       ['item24'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
       ['email'] : yup.string().required().email(),
      })
+
 
       const { register, handleSubmit, formState: { errors } } = useForm({
         resolver : yupResolver(schema)
