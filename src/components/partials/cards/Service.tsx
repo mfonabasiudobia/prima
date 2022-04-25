@@ -71,7 +71,7 @@ const Service = (props : any) => {
 							className={`${styles.sectionNavArrow}`}>
 							<BsChevronLeft size={20} />
 					</button>
-					<div className='overflow-x-auto flex items-center space-x-3 scroll-smooth snap-mandatory snap-x' ref={catNav}>
+					<div className='no-scrollbar overflow-x-auto flex items-center space-x-3 scroll-smooth snap-mandatory snap-x' ref={catNav}>
 						{categories.map((item, index) => 
 							<button 
 								onClick={() => setCategory(index)}

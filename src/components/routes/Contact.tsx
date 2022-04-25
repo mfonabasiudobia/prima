@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import location from "ubigeo-peru";
+import axios from "../utils/axios";
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
@@ -18,9 +19,7 @@ const styles = {
 
 const Contact = () => {
 
-	useEffect(() => {
-		// alert(JSON.stringify(location))
-	},[])
+	
 
 	const url =  /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 
@@ -56,14 +55,47 @@ const Contact = () => {
       ['affiliateEmail'] : yup.string().required().email(),
      })
 
+	// const [formData, setFormData ] = useState({
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// 	affiliateName : '',
+	// })
+
 
       const { register, handleSubmit, formState: { errors } } = useForm({
         resolver : yupResolver(schema)
       });
 
 
-      const handleForm = () => {
+      useEffect(() => {
+      	 const data = await axios.get("comunidad-prima/affiliate-prima");
+      },[])
 
+      const handleForm = async () => {
+      	
       }
 
 	return (
@@ -115,7 +147,7 @@ const Contact = () => {
 							{...register('affiliateDocumentType')}
 							className="form-control"
 							>
-								 <option hidden selected>Tipo de Documento</option>
+							<option hidden selected>Tipo de Documento</option>
 							<option value="1">D.N.I</option>
 							<option value="2">Pasaporte</option>
 							<option value="3">Carnet de extranjería</option>

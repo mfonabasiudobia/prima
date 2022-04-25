@@ -6,6 +6,7 @@ import { BsInstagram } from "react-icons/bs";
 import Modal from "../../Modal";
 import { NavLink } from "react-router-dom";
 import { MdLocationOn } from "react-icons/md";
+import { strlen } from "@mfonabasiudobia/str-func";
 
 const styles = {
     wrapper : `shadow-xl`,
@@ -75,11 +76,11 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                             <div className={styles.footerHeader}>
                                 <h1 className={styles.footerTitle}>Contáctame en:</h1>
                                 <div className="flex items-center space-x-2 font-semibold">
-                                   {details.socialInstagram.length > 0 && <a href={details.socialInstagram}>
+                                   {strlen(details.socialInstagram) > 0 && <a href={details.socialInstagram}>
                                         <BsInstagram size={15}  />
                                     </a>}
 
-                                    {details.socialFacebook.length > 0 && <a href={details.socialFacebook}>
+                                    {strlen(details.socialFacebook) > 0 && <a href={details.socialFacebook}>
                                         <FaFacebookF size={15}  />
                                     </a>  
                                     }
