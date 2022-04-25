@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 // import location from "ubigeo-peru";
-import axios from "../utils/axios";
+import axios from "../../utils/axios";
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
@@ -91,7 +91,7 @@ const Contact = () => {
 
 
       useEffect(() => {
-      	 const data = await axios.get("comunidad-prima/affiliate-prima");
+      	 const data = axios.get("comunidad-prima/affiliate-prima");
       },[])
 
       const handleForm = async () => {
