@@ -13,7 +13,7 @@ const styles = {
 	location: `flex items-center text-green-200 space-x-1 font-semibold`,
 	list: `list-disc list-inside marker:text-green-200 marker:text-xl`,
 	button : `rounded-xl text-orange-500 group-hover:bg-orange-500 group-hover:text-white font-bold py-2 px-7 border-2 border-orange-500`,
-	item : `rounded-2xl shadow-xl group overflow-hidden hover:border hover:border-orange-500`,
+	item : `rounded-2xl shadow-xl group overflow-hidden border hover:border hover:border-orange-500`,
 	image : `h-[20vh] object-cover w-full`,
 	activePaginationButton : `bg-orange-500 text-white`,
 	arrowBtn : `text-gray-500 hover:text-orange-500`,
@@ -52,10 +52,9 @@ const Service = (props : any) => {
 	  },[category])
 
 	 const filterCards = (data)  =>  {
-	 	return data.filter((item) => item.category_id === categories[category].id);
+	 	return category == 0 ? data : data.filter((item) => item.category_id === categories[category].id);
 	 }
 	 
-	
 
 	return (
 		<>
@@ -68,7 +67,7 @@ const Service = (props : any) => {
 
 				<div className="flex justify-center items-center space-x-3 py-7">
 					<button 
-							onClick={() => setCategory(category == 0 ? 0 : category - 1)} 
+							onClick={() => catNav.current.scrollLeft -= 150} 
 							className={`${styles.sectionNavArrow}`}>
 							<BsChevronLeft size={20} />
 					</button>
@@ -83,7 +82,7 @@ const Service = (props : any) => {
 						)}
 					</div>
 					<button 
-							onClick={() => setCategory(category == categories.length - 1 ? category : category + 1)} 
+							onClick={() => catNav.current.scrollLeft += 150} 
 							className={`${styles.sectionNavArrow}`}>
 							<BsChevronRight size={20} />
 					</button>
@@ -97,18 +96,11 @@ const Service = (props : any) => {
 							<header>
 								<h1 className={styles.title}>{item.name}</h1>
 								<div className={styles.location}>
-									<MdLocationOn size={20}/> <span>{item.city}</span>
+									<MdLocationOn size={20}/> <span>{item.department}</span>
 								</div>
 							</header>
-
-							<div className='italic'>
-								<p>Tu dinero acumulado sigue generando la rentabilidad </p>
-
-								<ul className={styles.list}>
-									<li>Arreglos de prendos</li>
-									<li>Arreglos de prendos</li>
-								</ul>
-							</div>
+					
+							<div className='italic' dangerouslySetInnerHTML={{__html:details.cardInfo}}/>							
 
 							<button 
 								onClick={() => {

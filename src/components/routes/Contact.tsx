@@ -8,6 +8,7 @@ import * as yup from 'yup';
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
+	orangeLink : 'text-orange',
 	wrapper : `container space-y-7`,
 	form : `grid grid-cols-1 md:grid-cols-3 gap-5`,
 	formHeader : `col-span-1 md:col-span-3 text-green-200 text-lg md:text-xl font-bold`,
@@ -24,35 +25,35 @@ const Contact = () => {
 	const url =  /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
 
 	const schema = yup.object().shape({
-      ['item1'] : yup.string().required().max(50),
-      ['item2'] : yup.string().required().max(50),
-      ['item3'] : yup.string().required().max(50),
-      ['item4'] : yup.string().required(),
-      ['item5'] : yup.string().required().max(8),
-      ['item6'] : yup.string().required().max(9),
-      ['question'] : yup.boolean().required(),
-      ['item7'] : yup.string().when(['question'], {
+      ['affiliateName'] : yup.string().required().max(50),
+      ['affiliateLastName'] : yup.string().required().max(50),
+      ['affiliateMothersLastName'] : yup.string().required().max(50),
+      ['affiliateDocumentType'] : yup.string().required(),
+      ['affiliateDocumentNumber'] : yup.string().required().max(8),
+      ['affiliatePhone'] : yup.string().required().max(9),
+      ['businessOwner'] : yup.boolean().required(),
+      ['relationshipMember'] : yup.string().when(['businessOwner'], {
       	is : true,
       	then : yup.string().required("This field is required")
       }),
-      ['item8'] : yup.string().required(),
-      ['item9'] : yup.string().required(),
-      ['item10'] : yup.string().required(),
-      ['item11'] : yup.string().required(),
-      ['item12'] : yup.string().required(),
-      ['item13'] : yup.string().required(),
-      ['item14'] : yup.string().required(),
-      ['item15'] : yup.string().required(),
-      ['item16'] : yup.string().required(),
-      ['item17'] : yup.string().required(),
-      ['item18'] : yup.string().required(),
-      ['item19'] : yup.string().required(),
-      ['item20'] : yup.string().required(),
-      ['item21'] : yup.string().required(),
-      ['item22'] : yup.string().required().max(2000),
-      ['item23'] : yup.string().required().max(2000),
-      ['item24'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
-      ['email'] : yup.string().required().email(),
+      ['ownerName'] : yup.string().required(),
+      ['ownerLastName'] : yup.string().required(),
+      ['ownerMothersLastName'] : yup.string().required(),
+      ['ownerDocumentType'] : yup.string().required(),
+      ['ownerDocumentNumber'] : yup.string().required(),
+      ['ownerPhone'] : yup.string().required(),
+      ['ownerEmail'] : yup.string().required(),
+      ['businessName'] : yup.string().required(),
+      ['category'] : yup.string().required(),
+      ['documentNumber'] : yup.string().required(),
+      ['department'] : yup.string().required(),
+      ['province'] : yup.string().required(),
+      ['district'] : yup.string().required(),
+      ['address'] : yup.string().required(),
+      ['shortDescription'] : yup.string().required().max(2000),
+      ['mainProducts'] : yup.string().required().max(2000),
+      ['phone'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
+      ['affiliateEmail'] : yup.string().required().email(),
      })
 
 
@@ -71,8 +72,8 @@ const Contact = () => {
 				
 
                         <header className="space-y-3">
-                                <h1 className={styles.title}>Tienda de Ropa Yanuy mi empredimiento?</h1>
-                                <p>Tu dinero acumulado sigue generando la rentabilidad Una alternativa diferente de ahorro e inversión, con objetivos</p>
+                                <h1 className={styles.title}>Regístrate en Comunidad Prima</h1>
+                                <p>Ingresa los datos solicitados y acepta nuestros términos y condiciones:</p>
                          </header>
 
 				<form className={styles.form} onSubmit={handleSubmit(handleForm)}>
@@ -82,250 +83,285 @@ const Contact = () => {
 
 					<div className="form-group">
 						<input 
-							{...register('item1')}
+							{...register('affiliateName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item1']?.message}</p>
+							placeholder="Nombres" />
+						 <p className="error">{errors['affiliateName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item2')}
+							{...register('affiliateLastName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item2']?.message}</p>
+							placeholder="Apellido Paterno" />
+						 <p className="error">{errors['affiliateLastName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item3')}
+							{...register('affiliateMothersLastName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item3']?.message}</p>
+							placeholder="Apellido Materno" />
+						 <p className="error">{errors['affiliateMothersLastName']?.message}</p>
 					</div>
 
 
 					<div className="form-group">
 						<BsChevronDown />
 						<select 
-							{...register('item4')}
+							{...register('affiliateDocumentType')}
 							className="form-control"
-							 placeholder="Nombers">
-							<option>Nombers</option>
-						</select>
-						 <p className="error">{errors['item3']?.message}</p>
+							>
+								 <option hidden selected>Tipo de Documento</option>
+							<option value="1">D.N.I</option>
+							<option value="2">Pasaporte</option>
+							<option value="3">Carnet de extranjería</option>
+							<option value="4">Carnet autorización ministerio de trabajo y promoción social</option>
+							<option value="5">Carnet del permiso temporal de permanencia</option>
+							<option value="6">Carnet de identidad de extranjero</option>
+							<option value="7">Carnet de solicitante de refugio</option>
+							</select>
+						 <p className="error">{errors['affiliateMothersLastName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item5')}
+							{...register('affiliateDocumentNumber')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item5']?.message}</p>
+							placeholder="N° Documento" />
+						 <p className="error">{errors['affiliateDocumentNumber']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item6')}
+							{...register('affiliatePhone')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item6']?.message}</p>
+							placeholder="Celular" />
+						 <p className="error">{errors['affiliatePhone']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('email')}
+							{...register('affiliateEmail')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['email']?.message}</p>
+							placeholder="Email registrado" />
+						 <p className="error">{errors['affiliateEmail']?.message}</p>
 					</div>
 
 					<div className={styles.formHeader}>
-						Tu dinero acumulado sigue
+						Información del titular del negocio 
 					</div>	
 
 					<div  className={`${styles.spanAll} flex items-center space-x-2`}>
-						<span>dinero acumulado sigue?</span> 
-						<label>Yes</label>
-						<input type="radio" value={1} {...register('question')} className="accent-orange-500" name="question" />
+						<span>¿Es propietario del negocio?</span> 
+						<label>Si</label>
+						<input type="radio" value={1} {...register('businessOwner')} className="accent-orange-500" name="question" />
 						<label>No</label> 
-						<input type="radio" value={0} {...register('question')} className="accent-orange-500" name="question" /> 
+						<input type="radio" value={0} {...register('businessOwner')} className="accent-orange-500" name="question" /> 
 					</div>
 
 					<div className="form-group ">
 						<BsChevronDown />
-						<select {...register('item7')} className="form-control" placeholder="Nombers">
-							<option value="">Nombers</option>
+						<select {...register('relationshipMember')} className="form-control" >
+						<option hidden selected>Vínculo con el afiliado</option>
+							<option value="1">Cónyuge</option>
+							<option value="1">Hijo (a)</option>
+							<option value="1">Hermano (a)</option>
+							<option value="1">Padre / Madr</option>
 						</select>
-						 <p className="error">{errors['item7']?.message}</p>
+						 <p className="error">{errors['relationshipMember']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item8')}
+							{...register('ownerName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item8']?.message}</p>
+							placeholder="Nombres" />
+						 <p className="error">{errors['ownerName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item9')}
+							{...register('ownerLastName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item9']?.message}</p>
+							placeholder="Apellido Paterno" />
+						 <p className="error">{errors['ownerLastName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item10')}
+							{...register('ownerMothersLastName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item10']?.message}</p>
+							placeholder="Apellido Materno" />
+						 <p className="error">{errors['ownerMothersLastName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<BsChevronDown />
 						<select 
-							{...register('item11')}
-							className="form-control" 
-							placeholder="Nombers">
-							<option>Nombers</option>
+							{...register('ownerDocumentType')}
+							className="form-control">
+								<option hidden selected>Tipo de Documento</option>
+							<option value="1">D.N.I</option>
+							<option value="2">Pasaporte</option>
+							<option value="3">Carnet de extranjería</option>
+							<option value="4">Carnet autorización ministerio de trabajo y promoción social</option>
+							<option value="5">Carnet del permiso temporal de permanencia</option>
+							<option value="6">Carnet de identidad de extranjero</option>
+							<option value="7">Carnet de solicitante de refugio</option>
 						</select>
-						<p className="error">{errors['item11']?.message}</p>
+						<p className="error">{errors['ownerDocumentType']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item12')}
+							{...register('ownerDocumentNumber')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item12']?.message}</p>
+							placeholder="N° Documento" />
+						 <p className="error">{errors['ownerDocumentNumber']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item13')}
+							{...register('ownerPhone')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item13']?.message}</p>
+							placeholder="Celular" />
+						 <p className="error">{errors['ownerPhone']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item14')}
+							{...register('ownerEmail')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						 <p className="error">{errors['item14']?.message}</p>
+							placeholder="Email" />
+						 <p className="error">{errors['ownerEmail']?.message}</p>
 					</div>
 
 
 					<div className={styles.formHeader}>
-						Tu dinero acumulado sigue
+					Información del negocio
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item15')}
+							{...register('businessName')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						<p className="error">{errors['item15']?.message}</p>
+							placeholder="Nombre del negocio" />
+						<p className="error">{errors['businessName']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<BsChevronDown />
 						<select 
-							{...register('item16')}
-							className="form-control" placeholder="Nombers">
+							{...register('category')}
+							className="form-control" >
+								<option hidden selected>Categoría</option>
 							<option>Nombers</option>
-						</select>
-						<p className="error">{errors['item16']?.message}</p>
+							<option value="1">Calzado</option>
+							<option value="2">Comidas y postres</option>
+							<option value="3">Decoraciones, fiestas y toldos</option>
+							<option value="4">Florerías</option>
+							<option value="5">Joyería y artesanía</option>
+							<option value="6">Maquillaje y peluquería</option>
+							<option value="7">Moda, satrería y accesorios</option>
+							<option value="8">Movilidad</option>
+							<option value="9">Muebles</option>
+							<option value="10">Panaderías y cafetería</option>
+							<option value="11">Servicios para el hogar</option>
+							<option value="12">Servicios Profesionales</option>
+							<option value="13">Terapia física y de lenguaje</option>
+							<option value="14">Turismo</option>
+							<option value="15">Tutorías y clases</option>
+							<option value="16">Otros</option>			
+							</select>
+						<p className="error">{errors['category']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item17')}
+							{...register('documentNumber')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-						<p className="error">{errors['item17']?.message}</p>
+							placeholder="N° RUC/RUS" />
+						<p className="error">{errors['documentNumber']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<BsChevronDown />
 						<select 
-							{...register('item18')}
-							className="form-control" placeholder="Nombers">
-							<option>Nombers</option>
+							{...register('department')}
+							className="form-control">
+							<option>Departamento</option>
 						</select>
-						<p className="error">{errors['item18']?.message}</p>
-					</div>
-
-
-					<div className="form-group">
-						<BsChevronDown />
-						<select 
-							{...register('item19')}
-							className="form-control" placeholder="Nombers">
-							<option>Nombers</option>
-						</select>
-						<p className="error">{errors['item19']?.message}</p>
+						<p className="error">{errors['department']?.message}</p>
 					</div>
 
 
 					<div className="form-group">
 						<BsChevronDown />
 						<select 
-							{...register('item20')}
-							className="form-control" placeholder="Nombers">
-							<option>Nombers</option>
+							{...register('province')}
+							className="form-control">
+							<option>Provincia</option>
 						</select>
-						<p className="error">{errors['item20']?.message}</p>
+						<p className="error">{errors['province']?.message}</p>
+					</div>
+
+
+					<div className="form-group">
+						<BsChevronDown />
+						<select 
+							{...register('district')}
+							className="form-control" >
+							<option>Distrito</option>
+						</select>
+						<p className="error">{errors['district']?.message}</p>
 					</div>
 
 					<div className="form-group md:col-span-2">
-						<input type="text" {...register('item21')} className="form-control" placeholder="Nombers" />
-						<p className="error">{errors['item21']?.message}</p>
+						<input type="text" {...register('address')} className="form-control" placeholder="Direción" />
+						<p className="error">{errors['address']?.message}</p>
 					</div>
 
 					<div className={`${styles.spanAll}`}>
 						<textarea 
-						{...register('item22')}
-						className="form-control" placeholder="Description" rows={5}></textarea>
-						<p className="error">{errors['item22']?.message}</p>
+						{...register('shortDescription')}
+						className="form-control" placeholder="Breve descripción" rows={5}></textarea>
+						<p className="error">{errors['shortDescription']?.message}</p>
 					</div>
 
 					<div className={`${styles.spanAll}`}>
 						<textarea 
-							{...register('item23')}
-							className="form-control" placeholder="Description" rows={5}></textarea>
-							<p className="error">{errors['item23']?.message}</p>
+							{...register('mainProducts')}
+							className="form-control" placeholder="Principales productos" rows={5}></textarea>
+							<p className="error">{errors['mainProducts']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
-							{...register('item24')}
+							{...register('phone')}
 							type="text" 
 							className="form-control" 
-							placeholder="Nombers" />
-							<p className="error">{errors['item24']?.message}</p>
+							placeholder="Celular o Whatsapp" />
+							<p className="error">{errors['phone']?.message}</p>
 					</div>
 
 					<div className="form-group">
 						<input 
+						{...register('urlInstagram')}
 							type="text" 
 							className="form-control" 
 							placeholder="URL Instagram" />
@@ -333,6 +369,7 @@ const Contact = () => {
 
 					<div className="form-group">
 						<input 
+						{...register('urlFacebook')}
 							type="text" 
 							className="form-control" 
 							placeholder="URL Facebook" />
@@ -340,17 +377,17 @@ const Contact = () => {
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
 						<input type="checkbox" className="accent-orange-500"  />
-						<label>Accept los termisnxn</label>
+						<label>Acepto los <a href="#">términos y condiciones</a></label>
 					</div>
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
 						<input type="checkbox" className="accent-orange-500"  />
-						<label>Accept los termisnxn</label>
+						<label>Acepto los <a href="#" className="orange-">términos en la Política de Privacidad para el Tratamiento de Datos Personales</a>.</label>
 					</div>
 
 					 <div className={`${styles.spanAll} flex justify-end items-center`}>
                             <button type="submit" className={styles.submit}>
-                                Register mi negocio
+                                Registrar mi negocio
                           	</button>
                       </div>
 

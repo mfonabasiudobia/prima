@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { FaTimes } from "react-icons/fa";
 
-const Modal = ({ children, isOpen, setIsOpen } : any) => {
+const Modal = ({ children, isOpen, setIsOpen, bodyClass } : any) => {
 
 	 const ref = useRef<any>(null);
 
@@ -21,7 +21,7 @@ const Modal = ({ children, isOpen, setIsOpen } : any) => {
 
 	      <div className="modal-inner-wrapper">
 
-	      	<div className="modal-body" ref={ref}>
+	      	<div className={`modal-body ${bodyClass}`} ref={ref}>
 				{ children }
 			</div>
 		  </div>

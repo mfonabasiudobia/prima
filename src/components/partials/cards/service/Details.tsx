@@ -42,8 +42,8 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                             className={styles.location}>
                                 <MdLocationOn size={20} />
                                 <div>
-                                    <h4 className={styles.locationName}>Lima</h4>
-                                    <span>San Borija</span>
+                                    <h4 className={styles.locationName}>{details.department}</h4>
+                                    <span>{details.district}</span>
                                 </div>
                          </button>
                       </div>
@@ -65,32 +65,28 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                              <strong>RUC:</strong> {details.RUC}
                          </div>
 
-                         <div className=''>
-                                <p>Tu dinero acumulado sigue generando la rentabilidad Una alternativa diferente de ahorro e inversión, con objetivos administrados de manera independiente. Una alternativa diferente de ahorro e inversión, con objetivos administrados de manera independiente.</p>
-
-                                <ul className={styles.list}>
-                                    <li>Arreglos de prendos</li>
-                                    <li>Arreglos de prendos</li>
-                                    <li>Arreglos de prendos</li>
-                                </ul>
+                         <div className='card-modal-content'>
+                         <div dangerouslySetInnerHTML={{__html:details.cardInfoModal}}/>
                         </div>
 
                         
 
                          <footer className={styles.footer}>
                             <div className={styles.footerHeader}>
-                                <h1 className={styles.footerTitle}>Contacttame en:</h1>
+                                <h1 className={styles.footerTitle}>Contáctame en:</h1>
                                 <div className="flex items-center space-x-2 font-semibold">
-                                    <NavLink to="/">
+                                   {details.socialInstagram.length > 0 && <a href={details.socialInstagram}>
                                         <BsInstagram size={15}  />
-                                    </NavLink>
-                                    <NavLink to="/">
+                                    </a>}
+
+                                    {details.socialFacebook.length > 0 && <a href={details.socialFacebook}>
                                         <FaFacebookF size={15}  />
-                                    </NavLink>  
+                                    </a>  
+                                    }
                                 </div>
                              </div>
 
-                             <p className="pl-5 ">Tu dinero acumulado sigue generando la rentabilidad Una alternativa diferente de ahorro e inversión, con objetivos administrados de manera independiente. Una alternativa diferente de ahorro e inversión, con objetivos administrados de manera independiente.</p>
+                             <p className="pl-5 ">Prima AFP ofrece este espacio digital como punto de contacto entre emprendedores y compradores, no somos responsables de la calidad de los productos y/o servicios que se ofrecen, ni de las transacciones de compra y venta.</p>
 
                          </footer>
 

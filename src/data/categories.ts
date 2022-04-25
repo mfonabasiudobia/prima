@@ -1,4 +1,5 @@
 export const categories = [
+     {id : 0, title: "All" },
      {id : 1, title: "Calzado" },
      {id : 2, title :  "Comidas y postres"},
      {id : 3, title :  "Decoraciones,  fiestas y toldos"},
