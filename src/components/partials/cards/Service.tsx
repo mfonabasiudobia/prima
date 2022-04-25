@@ -100,7 +100,7 @@ const Service = (props : any) => {
 								</div>
 							</header>
 					
-							<div className='italic' dangerouslySetInnerHTML={{__html:details.cardInfo}}/>							
+							<p className='italic' key={index} dangerouslySetInnerHTML={{__html: item.cardInfo}} />							
 
 							<button 
 								onClick={() => {
