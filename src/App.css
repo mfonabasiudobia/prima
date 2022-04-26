@@ -63,26 +63,26 @@ input[type="checkbox"]:checked ~ svg  {
       @apply text-sm
     }
 
-    
-
-  .modal-wrapper {
-    @apply overflow-x-hidden overflow-auto fixed top-0 h-full w-full left-0
+   
+   .modal-wrapper {
+    @apply overflow-hidden z-[100] overflow-y-auto fixed top-0 h-[100vh] w-full left-0 
   }
 
   .modal-inner-wrapper {
-    @apply relative z-[300] flex items-center justify-center min-h-full w-full p-5 after:bg-white after:content-[''] after:absolute after:top-0 after:left-0 after:h-full after:w-full after:opacity-50;
+    @apply flex flex-col items-center sticky top-0 z-[200] justify-center min-h-[100vh] w-full p-5 after:bg-white after:opacity-50 after:z-[100] after:absolute after:top-0 after:right-0 after:left-0 after:min-h-full
   }
 
   .modal-body {
-    @apply rounded-xl bg-white  relative z-[200] md:w-[70%] space-y-5; 
+     @apply rounded-xl bg-white  relative z-[200] md:w-[70%] space-y-5; 
   }
+
   
   .hide-modal {
-    @apply opacity-0 -z-50;
+    @apply hidden;
   }
 
   .show-modal {
-    @apply opacity-100 z-[300];
+    /*@apply opacity-100 ;*/
   }
 
   .error {

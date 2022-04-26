@@ -6,6 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import location from "ubigeo-peru";
 import axios from "../../utils/axios";
+import Loader from "../partials/Loader";
+import Swal from 'sweetalert2'
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
@@ -20,12 +22,7 @@ const styles = {
 const Contact = () => {
 
 	const [locationData, setLocationData] = useState<any>({ departments : [], province : [], district : []});
-
-	useEffect(() => {
-      	 // const data = axios.get("comunidad-prima/affiliate-prima");
-		
-      },[])
-
+	const [loading, setLoading] = useState<boolean>(false);
 	const { departments, province, district } = locationData;
 
 
@@ -34,20 +31,22 @@ const Contact = () => {
       ['affiliateLastName'] : yup.string().required().max(50),
       ['affiliateMothersLastName'] : yup.string().required().max(50),
       ['affiliateDocumentType'] : yup.string().required(),
-      ['affiliateDocumentNumber'] : yup.string().required().max(8),
-      ['affiliatePhone'] : yup.string().required().max(9),
+      ['affiliateDocumentNumber'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(8),
+      ['affiliatePhone'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
       ['businessOwner'] : yup.boolean().required(),
       ['relationshipMember'] : yup.string().when(['businessOwner'], {
       	is : true,
       	then : yup.string().required("This field is required")
       }),
+      ['acceptTerms'] : yup.bool().oneOf([true], 'Accept Tes & Cs is required'),
+      ['privacyPolicy'] : yup.bool().oneOf([true], 'Accept Privacy policy'),
       ['ownerName'] : yup.string().required(),
       ['ownerLastName'] : yup.string().required(),
       ['ownerMothersLastName'] : yup.string().required(),
       ['ownerDocumentType'] : yup.string().required(),
       ['ownerDocumentNumber'] : yup.string().required(),
-      ['ownerPhone'] : yup.string().required(),
-      ['ownerEmail'] : yup.string().required(),
+      ['ownerPhone'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
+      ['ownerEmail'] : yup.string().required().email(),
       ['businessName'] : yup.string().required(),
       ['category'] : yup.string().required(),
       ['documentNumber'] : yup.string().required(),
@@ -61,7 +60,7 @@ const Contact = () => {
       ['affiliateEmail'] : yup.string().required().email(),
      })
 
-	 const { register, handleSubmit, getValues, setValue, control, formState: { errors } } = useForm({
+	 const { register, handleSubmit, getValues, reset, setValue, control, formState: { errors } } = useForm({
         resolver : yupResolver(schema)
       });
 
@@ -135,12 +134,48 @@ const Contact = () => {
 	 
 
 
-      const handleForm = async (data) => {
-  
+      const handleForm = async (data, e) => {
+
+      		setLoading(!loading)
+  			axios({
+  				url: "comunidad-prima/affiliate-prima",
+  				method: 'POST',
+  				data : data
+  			})
+  			.then((res) => {
+  					setLoading(false)
+
+  					Swal.fire({
+					  title: 'Registration Completed',
+					  icon: 'success',
+					  confirmButtonText: 'Cancel'
+					})
+
+					reset(res);
+					e.target.reset()
+					e.reset();
+					
+
+  			})
+  			.catch((e) => {
+
+  					setLoading(false)
+
+  					Swal.fire({
+					  title: 'Opps!',
+					  text : 'An error occured white registering',
+					  icon: 'error',
+					  confirmButtonText: 'Cancel'
+					})
+					
+  			});
+
       }
 
 	return (
-		<section className="py-7 rounded-3xl bg-white mr-5 md:mr-10 shadow-xl relative -top-12">
+		<>
+		<Loader loading={loading} />
+		<section className="py-7 rounded-3xl bg-white mr-5 md:mr-10 shadow-xl relative z-[10] -top-12">
 			<div className={styles.wrapper}>
 				
 
@@ -452,13 +487,15 @@ const Contact = () => {
 					</div>
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
-						<input type="checkbox" className="accent-orange-500"  />
+						<input type="checkbox" {...register('acceptTerms')} className="accent-orange-500"  />
 						<label>Acepto los <a href="#">términos y condiciones</a></label>
+						<p className="error">{errors['acceptTerms']?.message}</p>
 					</div>
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
-						<input type="checkbox" className="accent-orange-500"  />
+						<input type="checkbox" {...register('privacyPolicy')} className="accent-orange-500"  />
 						<label>Acepto los <a href="#" className="orange-">términos en la Política de Privacidad para el Tratamiento de Datos Personales</a>.</label>
+						<p className="error">{errors['privacyPolicy']?.message}</p>
 					</div>
 
 					 <div className={`${styles.spanAll} flex justify-end items-center`}>
@@ -470,7 +507,8 @@ const Contact = () => {
 				</form>
 			</div>
 
-		</section>	)
+		</section>
+		</>	)
 }
 
 export default Contact
