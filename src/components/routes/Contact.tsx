@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from "react-router-dom";
 import { BsChevronDown } from "react-icons/bs";
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-// import location from "ubigeo-peru";
+import location from "ubigeo-peru";
 import axios from "../../utils/axios";
 
 const styles = {
@@ -19,9 +19,15 @@ const styles = {
 
 const Contact = () => {
 
-	
+	const [locationData, setLocationData] = useState<any>({ departments : [], province : [], district : []});
 
-	const url =  /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/;
+	useEffect(() => {
+      	 // const data = axios.get("comunidad-prima/affiliate-prima");
+		
+      },[])
+
+	const { departments, province, district } = locationData;
+
 
 	const schema = yup.object().shape({
       ['affiliateName'] : yup.string().required().max(50),
@@ -55,47 +61,82 @@ const Contact = () => {
       ['affiliateEmail'] : yup.string().required().email(),
      })
 
-	// const [formData, setFormData ] = useState({
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// 	affiliateName : '',
-	// })
-
-
-      const { register, handleSubmit, formState: { errors } } = useForm({
+	 const { register, handleSubmit, getValues, setValue, control, formState: { errors } } = useForm({
         resolver : yupResolver(schema)
       });
 
+	 const watchDepartment = useWatch({ control, name : 'department'});
+	 const watchProvince = useWatch({ control, name : 'province'});
+	 const watchBusinessOwner = useWatch({ control, name : 'businessOwner'});
+	 const { reniec } : any = location;
 
-      useEffect(() => {
-      	 const data = axios.get("comunidad-prima/affiliate-prima");
-      },[])
+	 useEffect(() => {
 
-      const handleForm = async () => {
-      	
+		let setDepartments : any[] = [];
+
+		for(let i = 0;i < reniec.length - 1; i++) {
+
+				if(reniec[i]['distrito'] == '00' && reniec[i]['provincia'] == '00')
+										setDepartments.push(reniec[i]);
+				
+		}
+
+		 setLocationData({...locationData, departments : setDepartments})
+
+	},[])
+
+	 useEffect(() => {
+
+	 	 if(departments.length > 0){
+		 	 	let province : any[] = [];
+
+				for(let i = 0;i < reniec.length - 1; i++) {
+
+						if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] != '00')
+																			province.push(reniec[i]);						
+				}
+
+				 setLocationData({...locationData, province })
+	 	 }
+	 		
+	 	
+	},[watchDepartment])
+
+
+	 useEffect(() => {
+
+	 	 if(province.length > 0){
+		 	 	let district : any[] = [];
+
+				for(let i = 0;i < reniec.length - 1; i++) {
+
+				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['provincia'] == getValues('province')  && reniec[i]['distrito'] != '00')
+					district.push(reniec[i]);						
+				}
+
+				 setLocationData({...locationData, district })
+	 	 }
+	 		
+	 	
+	},[watchProvince])
+
+
+	 useEffect(() => {
+
+	 if(watchBusinessOwner == 1){
+		 	//Auto Update userInfomation if yes
+		 	let affilaiteInfo = ["affiliateName","affiliateLastName","affiliateMothersLastName","affiliateDocumentType","affiliateDocumentNumber","affiliatePhone"];
+		 	let ownerInfo = ["ownerName","ownerLastName","ownerMothersLastName","ownerDocumentType","ownerDocumentNumber","ownerPhone"];
+
+		 	affilaiteInfo.map((item, index) => setValue(ownerInfo[index], getValues(item)))
+	 }
+
+	 },[watchBusinessOwner])
+	 
+
+
+      const handleForm = async (data) => {
+  
       }
 
 	return (
@@ -192,10 +233,10 @@ const Contact = () => {
 
 					<div  className={`${styles.spanAll} flex items-center space-x-2`}>
 						<span>¿Es propietario del negocio?</span> 
-						<label>Si</label>
-						<input type="radio" value={1} {...register('businessOwner')} className="accent-orange-500" name="question" />
-						<label>No</label> 
-						<input type="radio" value={0} {...register('businessOwner')} className="accent-orange-500" name="question" /> 
+						<label htmlFor='yes'>Si</label>
+						<input type="radio" id='yes' defaultValue={1} {...register('businessOwner')} className="accent-orange-500" />
+						<label htmlFor='no'>No</label> 
+						<input type="radio" id='no' defaultValue={0} {...register('businessOwner')} className="accent-orange-500" /> 
 					</div>
 
 					<div className="form-group ">
@@ -337,6 +378,7 @@ const Contact = () => {
 							{...register('department')}
 							className="form-control">
 							<option>Departamento</option>
+							{departments.map((item, index) => <option key={index} value={item['departamento']}>{item['nombre']}</option>)}
 						</select>
 						<p className="error">{errors['department']?.message}</p>
 					</div>
@@ -347,6 +389,7 @@ const Contact = () => {
 						<select 
 							{...register('province')}
 							className="form-control">
+							{province.map((item, index) => <option key={index} value={item['provincia']}>{item['nombre']}</option>)}
 							<option>Provincia</option>
 						</select>
 						<p className="error">{errors['province']?.message}</p>
@@ -358,6 +401,7 @@ const Contact = () => {
 						<select 
 							{...register('district')}
 							className="form-control" >
+							{district.map((item, index) => <option key={index} value={item['distrito']}>{item['nombre']}</option>)}
 							<option>Distrito</option>
 						</select>
 						<p className="error">{errors['district']?.message}</p>

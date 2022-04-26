@@ -3,7 +3,7 @@ import { MdLocationOn } from "react-icons/md";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 
 const styles = {
-	wrapper : `bg-white flex items-center container rounded-xl px-7 py-3 shadow-lg`,
+	wrapper : `bg-white flex items-center rounded-xl px-7 py-3 shadow-lg`,
 	wrapperRight : `flex flex-col justify-center flex-1 items-start px-4`,
 	title : `text-xl font-bold text-green-200`,
 	paragraph : `text-sm font-light`,
@@ -12,7 +12,7 @@ const styles = {
 
 const Service = (props : any) => {
 	return (
-		<section className="py-7 rounded-xl bg-white mx-3 relative -top-7">
+		<section className="py-7 rounded-xl bg-white mx-auto relative -top-7 md:w-[1295px] ">
 			<div className={styles.wrapper}>
 				<div>
 					<img src="/images/hero-bg.png" className="h-auto w-[100px] pl-2 pt-2" />

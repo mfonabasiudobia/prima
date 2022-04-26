@@ -40,7 +40,9 @@ const Service = (props : any) => {
 	const catNav = useRef<any>();
 
 	 useEffect(() => {
-    		
+
+	    setCurrentPage(0)
+
     	if(prevCategory < category)
 	    		catNav.current.scrollLeft += (categories[category].title.length*8);
 	    else 

@@ -27,7 +27,7 @@ const styles = {
 const Details = ({ isOpen, setIsOpen, details } : any) => {
 
   return (
-        <Modal isOpen={isOpen} setIsOpen={() => setIsOpen()} title="Select a token" >
+        <Modal isOpen={isOpen} setIsOpen={() => setIsOpen()} title="Select a token" bodyClass="md:w-[830px]">
            <div className={styles.wrapper} >
                   
                   <section className={styles.topHeader}>
