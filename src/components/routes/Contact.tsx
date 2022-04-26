@@ -25,7 +25,6 @@ const Contact = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const { departments, province, district } = locationData;
 
-
 	const schema = yup.object().shape({
       ['affiliateName'] : yup.string().required().max(50),
       ['affiliateLastName'] : yup.string().required().max(50),
@@ -145,16 +144,13 @@ const Contact = () => {
   			.then((res) => {
   					setLoading(false)
 
+  					e.target.reset()
+
   					Swal.fire({
 					  title: 'Registration Completed',
 					  icon: 'success',
 					  confirmButtonText: 'Cancel'
-					})
-
-					reset(res);
-					e.target.reset()
-					e.reset();
-					
+					})	
 
   			})
   			.catch((e) => {
