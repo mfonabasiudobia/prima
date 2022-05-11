@@ -182,11 +182,13 @@ const Register = () => {
       }
 
 
-      const preventInvalidCharacters = (e, length) => {
+      const preventInvalidCharacters = (e, name, length) => {
+
       		if(e.key != 'Backspace'){
-		      		if(/^[0-9]$/.test(e.key) == false || e.target.value.length >= length){
-		      				e.preventDefault();
-		      		}
+      				var str = e.target.value;
+
+      				setValue(name,str.slice(0,length).replace(/[^0-9]+$/g,""));
+
       		}
 
       }
@@ -257,7 +259,7 @@ const Register = () => {
 						<input 
 							{...register('affiliateDocumentNumber')}
 							type="number" 
-							onKeyDown={(e) => preventInvalidCharacters(e, 8)}
+							onKeyUp={(e) => preventInvalidCharacters(e,'affiliateDocumentNumber', 8)}
 							className="form-control" 
 							placeholder="N° Documento" />
 						 <p className="error">{errors['affiliateDocumentNumber']?.message}</p>
@@ -267,7 +269,7 @@ const Register = () => {
 						<input 
 							{...register('affiliatePhone')}
 							type="number" 
-							onKeyDown={(e) => preventInvalidCharacters(e, 9)}
+							onKeyUp={(e) => preventInvalidCharacters(e,'affiliatePhone', 9)}
 							className="form-control" 
 							placeholder="Celular" />
 						 <p className="error">{errors['affiliatePhone']?.message}</p>
@@ -364,7 +366,7 @@ const Register = () => {
 						<input 
 							{...register('ownerPhone')}
 							type="number" 
-							onKeyDown={(e) => preventInvalidCharacters(e, 9)}
+							onKeyUp={(e) => preventInvalidCharacters(e,'ownerPhone', 9)}
 							className="form-control" 
 							placeholder="Celular" />
 						 <p className="error">{errors['ownerPhone']?.message}</p>
@@ -424,7 +426,7 @@ const Register = () => {
 						<input 
 							{...register('documentNumber')}
 							type="number" 
-							onKeyDown={(e) => preventInvalidCharacters(e, 8)} 
+							onKeyUp={(e) => preventInvalidCharacters(e,'documentNumber', 8)} 
 							className="form-control" 
 							placeholder="N° RUC/RUS" />
 						<p className="error">{errors['documentNumber']?.message}</p>
@@ -488,7 +490,7 @@ const Register = () => {
 						<input 
 							{...register('phone')}
 							type="number" 
-							onKeyDown={(e) => preventInvalidCharacters(e, 9)} 
+							onKeyUp={(e) => preventInvalidCharacters(e,'phone', 9)} 
 							className="form-control" 
 							placeholder="Celular o Whatsapp" />
 							<p className="error">{errors['phone']?.message}</p>
