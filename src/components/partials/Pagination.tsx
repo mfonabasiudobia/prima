@@ -36,7 +36,7 @@ const Pagination = ({ total, setCurrentPage, currentPage } : any) => {
       </div>
   )
   }else {
-    return <h1 className="text-center pb-5">No Items found</h1>
+    return <h1 className="text-center text-lg py-10 text-grey-500">Sin negocios para mostrar</h1>
   }
   
 }

@@ -7,21 +7,25 @@ import Modal from "../../Modal";
 import { NavLink } from "react-router-dom";
 import { MdLocationOn } from "react-icons/md";
 import { strlen } from "@mfonabasiudobia/str-func";
+import { MdInfoOutline } from "react-icons/md";
 
 const styles = {
     wrapper : `shadow-xl`,
     topHeader : `relative`,
-    container : `relative h-[40vh]`,
-    cancel : `z-10 w-10 h-10 p-1 shadow-xl rounded-full absolute right-5 top-5 bg-white text-red-500 flex items-center justify-center`,
-    body: `p-5 md:p-10 space-y-3`,
-    bodyHeader : `flex justify-between items-start`,
-    title : `text-xl font-bold text-orange-500`,
+    container : `relative h-[30vh]`,
+    cancel : `z-10 w-8 h-8 p-1 shadow-xl rounded-full absolute right-5 top-5 bg-white text-red-500 flex items-center justify-center`,
+    body: `px-7 py-5 md:py-10 md:px-16 sm:px-16 xs:text-xs space-y-3 text-grey-500 text-base`,
+    bodyHeader : `flex justify-between items-start text-base`,
+    title : `text-xl font-bold text-orange-500 xs:text-[22px]`,
     list: `list-disc list-inside marker:text-green-200 marker:text-2xl`,
     footer : `text-sm space-y-5`,
-    footerHeader : `flex items-center space-x-7`,
-    footerTitle :   ` font-bold `,
-    location : `z-10 bg-green-200 px-2 shadow-xl py-2 font-light text-white text-left rounded-lg text-sm flex items-center justify-center space-x-3 absolute  bottom-5 left-5`,
-    locationName :  `font-bold`
+    footerHeader : `flex items-center space-x-7 my-7`,
+    footerTitle :   ` font-bold text-[18px] `,
+    location : `z-10 bg-green-200 shadow-xl py-1.5 font-light text-white text-left rounded-lg text-sm pr-5 pl-2 flex items-center justify-center space-x-2 absolute  bottom-5 left-16 xs:left-8 `,
+    locationName :  `font-bold`,
+    infoDetail : 'text-grey-500 text-sm',
+    legalInfo : 'pl-2 xs:text-[12px]',
+    bodyDetail: 'card-modal-content listCard listCardModal text-baseEx xs:text-sm'
 }
 
 const Details = ({ isOpen, setIsOpen, details } : any) => {
@@ -41,7 +45,7 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
 
                          <button 
                             className={styles.location}>
-                                <MdLocationOn size={20} />
+                                <MdLocationOn size={22} />
                                 <div>
                                     <h4 className={styles.locationName}>{details.department}</h4>
                                     <span>{details.district}</span>
@@ -56,17 +60,17 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                           
                         <header className={styles.bodyHeader}>
                                 <h1 className={styles.title}>{details.name}</h1>
-                                <div className="flex items-center space-x-2 font-semibold">
+                                <div className="flex items-center space-x-2 font-semibold text-lg">
                                     <BsWhatsapp size={20} className="text-green-500" />
                                     <span>{details.phone}</span>
                                 </div>
                          </header>
 
-                         <div className="text-lg">
+                         <div className="text-baseEx py-1 xs:text-[18px]">
                              <strong>RUC:</strong> {details.RUC}
                          </div>
 
-                         <div className='card-modal-content'>
+                         <div className={styles.bodyDetail}>
                          <div dangerouslySetInnerHTML={{__html:details.cardInfoModal}}/>
                         </div>
 
@@ -76,19 +80,20 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                             <div className={styles.footerHeader}>
                                 <h1 className={styles.footerTitle}>Contáctame en:</h1>
                                 <div className="flex items-center space-x-2 font-semibold">
-                                   {strlen(details.socialInstagram) > 0 && <a href={details.socialInstagram}>
-                                        <BsInstagram size={15}  />
+                                   {strlen(details.socialInstagram) > 0 && <a href={details.socialInstagram} target='_blank' rel="noreferrer">
+                                        <BsInstagram size={24}  />
                                     </a>}
 
-                                    {strlen(details.socialFacebook) > 0 && <a href={details.socialFacebook}>
+                                    {strlen(details.socialFacebook) > 0 && <a href={details.socialFacebook} target='_blank' rel="noreferrer">
                                         <FaFacebookF size={15}  />
                                     </a>  
                                     }
                                 </div>
                              </div>
-
-                             <p className="pl-5 ">Prima AFP ofrece este espacio digital como punto de contacto entre emprendedores y compradores, no somos responsables de la calidad de los productos y/o servicios que se ofrecen, ni de las transacciones de compra y venta.</p>
-
+                            <div className='infoDetail items-center space-x-2 flex mb-4 mt-6'>
+                            <span><MdInfoOutline size={20} /></span> 
+                             <p className={styles.legalInfo}> Prima AFP ofrece este espacio digital como punto de contacto entre emprendedores y compradores, no somos responsables de la calidad de los productos y/o servicios que se ofrecen, ni de las transacciones de compra y venta.</p>
+                            </div>
                          </footer>
 
                       </section>

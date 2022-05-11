@@ -12,55 +12,57 @@ import Swal from 'sweetalert2'
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
 	orangeLink : 'text-orange',
-	wrapper : `container space-y-7`,
+	wrapper : `container space-y-7 pt-10 text-baseEx text-grey-500 mb-20`,
 	form : `grid grid-cols-1 md:grid-cols-3 gap-5`,
-	formHeader : `col-span-1 md:col-span-3 text-green-200 text-lg md:text-xl font-bold`,
+	formHeader : `col-span-1 md:col-span-3 text-green-200 text-baseEx md:text-lg mt-4`,
 	spanAll : `col-span-1 md:col-span-3`,
-	submit : `rounded-lg px-4 py-2 text-base bg-orange-500 font-bold text-white flex items-center space-x-2`
+	submit : `rounded-lg px-4 py-2 text-baseEx bg-orange-500 font-bold text-white flex items-center space-x-2`
 }
 
-const Contact = () => {
+const Register = () => {
 
 	const [locationData, setLocationData] = useState<any>({ departments : [], province : [], district : []});
 	const [loading, setLoading] = useState<boolean>(false);
 	const { departments, province, district } = locationData;
 
 	const schema = yup.object().shape({
-      ['affiliateName'] : yup.string().required().max(50),
-      ['affiliateLastName'] : yup.string().required().max(50),
-      ['affiliateMothersLastName'] : yup.string().required().max(50),
-      ['affiliateDocumentType'] : yup.string().required(),
-      ['affiliateDocumentNumber'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(8),
-      ['affiliatePhone'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
+      ['affiliateName'] : yup.string().required("No ingresaste nombbre").max(50),
+      ['affiliateLastName'] : yup.string().required("No ingresaste apellido pterno").max(50),
+      ['affiliateMothersLastName'] : yup.string().required("No ingresaste apellido materno").max(50),
+      ['affiliateDocumentType'] : yup.string().required("Tipo de documento es obligatorio"),
+      ['affiliateDocumentNumber'] : yup.string().required("Documento es obligatorio").matches(/^[0-9]+$/,"Solo ingresa números").length(8),
+      ['affiliatePhone'] : yup.string().required("Teléfono es obligatorio").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
       ['businessOwner'] : yup.boolean().required(),
       ['relationshipMember'] : yup.string().when(['businessOwner'], {
       	is : true,
-      	then : yup.string().required("This field is required")
+      	then : yup.string().required("Es obligatorio")
       }),
-      ['acceptTerms'] : yup.bool().oneOf([true], 'Accept Tes & Cs is required'),
-      ['privacyPolicy'] : yup.bool().oneOf([true], 'Accept Privacy policy'),
-      ['ownerName'] : yup.string().required(),
-      ['ownerLastName'] : yup.string().required(),
-      ['ownerMothersLastName'] : yup.string().required(),
-      ['ownerDocumentType'] : yup.string().required(),
-      ['ownerDocumentNumber'] : yup.string().required(),
-      ['ownerPhone'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
-      ['ownerEmail'] : yup.string().required().email(),
-      ['businessName'] : yup.string().required(),
-      ['category'] : yup.string().required(),
-      ['documentNumber'] : yup.string().required(),
-      ['department'] : yup.string().required(),
-      ['province'] : yup.string().required(),
-      ['district'] : yup.string().required(),
-      ['address'] : yup.string().required(),
-      ['shortDescription'] : yup.string().required().max(2000),
-      ['mainProducts'] : yup.string().required().max(2000),
-      ['phone'] : yup.string().required().matches(/^[0-9]+$/,"Must be only digits").length(9),
-      ['affiliateEmail'] : yup.string().required().email(),
+      ['acceptTerms'] : yup.bool().oneOf([true], 'Es necesario aceptar los Términos y condiciones'),
+      ['privacyPolicy'] : yup.bool().oneOf([true], 'Es necesario aceptar la política de privacidad'),
+      ['ownerName'] : yup.string().required("Nombre del titular es necesario"),
+      ['ownerLastName'] : yup.string().required("Apellido Paterno del titular es necesario"),
+      ['ownerMothersLastName'] : yup.string().required("Apellido materno es necesario"),
+      ['ownerDocumentType'] : yup.string().required("Tipo de documento es necesario"),
+      ['ownerDocumentNumber'] : yup.string().required("Número de documento es necesario"),
+      ['ownerPhone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
+      ['ownerEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
+      ['businessName'] : yup.string().required("Nombre del negocio es necesario"),
+      ['category'] : yup.string().required("Categoría es necesario"),
+      ['documentNumber'] : yup.string().required("RUC es necesario"),
+      ['department'] : yup.string().required("Departamento es necesario"),
+      ['province'] : yup.string().required("Provincia es necesaria"),
+      ['district'] : yup.string().required("Distrito es necesario"),
+      ['address'] : yup.string().required("Dirección es necesaria"),
+      ['shortDescription'] : yup.string().required("Debes agregar una descripción del negocio").max(2000),
+      ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000),
+      ['phone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
+      ['affiliateEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
      })
 
 	 const { register, handleSubmit, getValues, reset, setValue, control, formState: { errors } } = useForm({
-        resolver : yupResolver(schema)
+        resolver : yupResolver(schema),
+        mode : 'all',
+        reValidateMode : 'onChange'
       });
 
 	 const watchDepartment = useWatch({ control, name : 'department'});
@@ -123,10 +125,12 @@ const Contact = () => {
 
 	 if(watchBusinessOwner == 1){
 		 	//Auto Update userInfomation if yes
-		 	let affilaiteInfo = ["affiliateName","affiliateLastName","affiliateMothersLastName","affiliateDocumentType","affiliateDocumentNumber","affiliatePhone"];
-		 	let ownerInfo = ["ownerName","ownerLastName","ownerMothersLastName","ownerDocumentType","ownerDocumentNumber","ownerPhone"];
+		 	let affilaiteInfo = ["affiliateName","affiliateLastName","affiliateMothersLastName","affiliateDocumentType","affiliateDocumentNumber","affiliatePhone","affiliateEmail"];
+		 	let ownerInfo = ["ownerName","ownerLastName","ownerMothersLastName","ownerDocumentType","ownerDocumentNumber","ownerPhone","ownerEmail"];
 
-		 	affilaiteInfo.map((item, index) => setValue(ownerInfo[index], getValues(item)))
+		 	affilaiteInfo.map((item, index) => setValue(ownerInfo[index], getValues(item)));
+
+
 	 }
 
 	 },[watchBusinessOwner])
@@ -139,17 +143,20 @@ const Contact = () => {
   			axios({
   				url: "comunidad-prima/affiliate-prima",
   				method: 'POST',
-  				data : data
+  				data : data 
   			})
-  			.then((res) => {
+  			.then((res) => { 
   					setLoading(false)
-
+ 
   					e.target.reset()
 
   					Swal.fire({
-					  title: 'Registration Completed',
+					  title: 'Registro Exitoso', 
 					  icon: 'success',
-					  confirmButtonText: 'Cancel'
+					  confirmButtonText: 'Regresar',
+					  customClass: {
+						confirmButton: 'confirmForm'
+						}
 					})	
 
   			})
@@ -159,9 +166,12 @@ const Contact = () => {
 
   					Swal.fire({
 					  title: 'Opps!',
-					  text : 'An error occured white registering',
+					  text : 'Ocurrió un error',
 					  icon: 'error',
-					  confirmButtonText: 'Cancel'
+					  confirmButtonText: 'Cancelar',
+					  customClass: {
+						confirmButton: 'confirmForm'
+						}
 					})
 					
   			});
@@ -171,7 +181,7 @@ const Contact = () => {
 	return (
 		<>
 		<Loader loading={loading} />
-		<section className="py-7 rounded-3xl bg-white mr-5 md:mr-10 shadow-xl relative z-[10] -top-12">
+		<section className="bcontainer">
 			<div className={styles.wrapper}>
 				
 
@@ -181,9 +191,8 @@ const Contact = () => {
                          </header>
 
 				<form className={styles.form} onSubmit={handleSubmit(handleForm)}>
-					<div className={styles.formHeader}>
-						Tu dinero acumulado sigue
-					</div>
+					<h3 className={styles.formHeader}>
+						Información del Afiliado</h3>
 
 					<div className="form-group">
 						<input 
@@ -234,7 +243,8 @@ const Contact = () => {
 					<div className="form-group">
 						<input 
 							{...register('affiliateDocumentNumber')}
-							type="text" 
+							type="number" 
+							min={0}
 							className="form-control" 
 							placeholder="N° Documento" />
 						 <p className="error">{errors['affiliateDocumentNumber']?.message}</p>
@@ -243,7 +253,8 @@ const Contact = () => {
 					<div className="form-group">
 						<input 
 							{...register('affiliatePhone')}
-							type="text" 
+							type="number" 
+							min={0}
 							className="form-control" 
 							placeholder="Celular" />
 						 <p className="error">{errors['affiliatePhone']?.message}</p>
@@ -258,9 +269,9 @@ const Contact = () => {
 						 <p className="error">{errors['affiliateEmail']?.message}</p>
 					</div>
 
-					<div className={styles.formHeader}>
+					<h3 className={styles.formHeader}>
 						Información del titular del negocio 
-					</div>	
+					</h3>	
 
 					<div  className={`${styles.spanAll} flex items-center space-x-2`}>
 						<span>¿Es propietario del negocio?</span> 
@@ -274,10 +285,11 @@ const Contact = () => {
 						<BsChevronDown />
 						<select {...register('relationshipMember')} className="form-control" >
 						<option hidden selected>Vínculo con el afiliado</option>
+							<option value="0">Titular</option>
 							<option value="1">Cónyuge</option>
-							<option value="1">Hijo (a)</option>
-							<option value="1">Hermano (a)</option>
-							<option value="1">Padre / Madr</option>
+							<option value="2">Hijo (a)</option>
+							<option value="3">Hermano (a)</option>
+							<option value="4">Padre / Madr</option>
 						</select>
 						 <p className="error">{errors['relationshipMember']?.message}</p>
 					</div>
@@ -338,7 +350,8 @@ const Contact = () => {
 					<div className="form-group">
 						<input 
 							{...register('ownerPhone')}
-							type="text" 
+							type="number" 
+							min={0}
 							className="form-control" 
 							placeholder="Celular" />
 						 <p className="error">{errors['ownerPhone']?.message}</p>
@@ -354,9 +367,9 @@ const Contact = () => {
 					</div>
 
 
-					<div className={styles.formHeader}>
+					<h3 className={styles.formHeader}>
 					Información del negocio
-					</div>
+					</h3>
 
 					<div className="form-group">
 						<input 
@@ -460,7 +473,8 @@ const Contact = () => {
 					<div className="form-group">
 						<input 
 							{...register('phone')}
-							type="text" 
+							type="number" 
+							min={0} 
 							className="form-control" 
 							placeholder="Celular o Whatsapp" />
 							<p className="error">{errors['phone']?.message}</p>
@@ -507,4 +521,4 @@ const Contact = () => {
 		</>	)
 }
 
-export default Contact
+export default Register

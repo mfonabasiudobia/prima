@@ -3,13 +3,14 @@ import { MdLocationOn } from "react-icons/md";
 import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import Details from "./service/Details";
 import OpenContact from "./advert/OpenContact";
-import { Data } from "../../../data/cards";
-import { categories } from "../../../data/categories";
+import Data  from "../../../data/cards.json";
+import categories from "../../../data/categories.json";
 import Pagination from "../Pagination";
+import axios from "axios";
 
 const styles = {
-	title : `text-xl font-bold group-hover:text-orange-500`,
-	body : `p-5 py-7 space-y-3 md:px-7`,
+	title : `text-lg font-bold group-hover:text-orange-500 text-grey-500`,
+	body : `p-5 py-7 space-y-3 md:px-8`,
 	location: `flex items-center text-green-200 space-x-1 font-semibold`,
 	list: `list-disc list-inside marker:text-green-200 marker:text-xl`,
 	button : `rounded-xl text-orange-500 group-hover:bg-orange-500 group-hover:text-white font-bold py-2 px-7 border-2 border-orange-500`,
@@ -18,13 +19,14 @@ const styles = {
 	activePaginationButton : `bg-orange-500 text-white`,
 	arrowBtn : `text-gray-500 hover:text-orange-500`,
 	advert : `bg-gradient-to-r from-orange-500 to-orange-400 flex items-center container rounded-xl`,
-	advertBtn : `rounded-xl text-orange-500 bg-white font-bold py-2 px-7`,
+	advertBtn : `rounded-xl text-orange-500 bg-white font-bold py-2 px-7 text-baseEx`,
 	advertRight : `flex flex-col justify-center flex-1 text-white items-start space-y-3 py-3 px-3`,
 	advertRightTitle : `text-xl font-bold`,
-	advertRightParagraph : `text-sm font-light`,
+	advertRightParagraph : `text-baseEx font-light pr-4 py-0.5`,
 	sectionTitle : `text-xl text-orange-500 font-bold text-center`,
 	sectionNavItem : `snap-center rounded  whitespace-nowrap hover:bg-orange-500 hover:text-white font-medium py-2 px-7 border border-orange-500`,
-	sectionNavArrow : `text-orange-500 py-5 font-bold`
+	sectionNavArrow : `text-orange-500 py-5 font-bold`,
+	textCard : 'text-grey-500 child:list-disc italic listCard'
 
 }
 
@@ -53,6 +55,20 @@ const Service = (props : any) => {
 
 	  },[category])
 
+
+	 // useEffect(() => {
+
+	 // 	axios.get("../../../data/cards.json").then(() => {
+
+	 // 		alert(JSON.stringify(Datas))
+
+	 // 	}).catch(console.log);
+
+	 	
+
+	 // },[])
+
+	 
 	 const filterCards = (data)  =>  {
 	 	return category == 0 ? data : data.filter((item) => item.category_id === categories[category].id);
 	 }
@@ -102,7 +118,7 @@ const Service = (props : any) => {
 								</div>
 							</header>
 					
-							<p className='italic' key={index} dangerouslySetInnerHTML={{__html: item.cardInfo}} />							
+							<div className='textCard listCard' key={index} dangerouslySetInnerHTML={{__html: item.cardInfo}} />							
 
 							<button 
 								onClick={() => {
@@ -124,15 +140,15 @@ const Service = (props : any) => {
 
 			<div className={styles.advert}>
 				<div>
-					<img src="/images/hero-bg.png" className="h-auto w-[100px] md:w-[200px] pl-2 pt-2" />
+				<img src="/images/banner_registro.png" className="h-auto w-[350px] md:w-[350px] pl-2 pr-0 pt-4" />
 				</div>
 
 				<div className={styles.advertRight}>
-					<h2 className={styles.advertRightTitle}>Lanzamos la 5ta temporada de El Depa!</h2>
-					<p className={styles.advertRightParagraph}>Acompaña a los chicos del #ElDepa en su convivencia mientras conocen más sobre las automático. Todo esto desde nuestra app. AFP.</p>
+					<h2 className={styles.advertRightTitle}>¿Tienes un emprendimiento?</h2>
+					<p className={styles.advertRightParagraph}>Publica tu negocio o el de un familiar en la página de <b>Comunidad Prima</b> para así llegar a más personas.</p>
 					<button 
 						onClick={() => setData({...data, isContactOpen : !data.isContactOpen })}
-						className={styles.advertBtn}>Conoce mais</button>
+						className={styles.advertBtn}>Conoce más</button>
 				</div>
 			</div>
 

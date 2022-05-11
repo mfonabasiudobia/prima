@@ -15,11 +15,11 @@
 }
 
 body {
-     @apply font-['Calibri'] text-gray-900 overflow-hidden;
+     @apply font-['Calibri'] text-gray-900 overflow-hidden;   
 }
 
-h1, h2 {
-   font-family: 'Fs Emeric' !important;
+h1, h2, h3 {
+   font-family: 'Fs Emeric' !important;   
 }
 
 
@@ -29,36 +29,56 @@ input[type="checkbox"]:checked ~ svg  {
 }
  
 @layer components {
-
-  .container {
-    @apply md:w-[1100px] mx-auto px-5 
+  .home-bg{
+    background:url(/public/images/banner_top_home.png) no-repeat right; background-size: auto 100%;
   }
-
+  .container {
+    @apply max-w-[1080px] mx-auto px-4
+  }
+  .bcontainer {
+   
+  }
+  .textop{
+    @apply  text-[19px] text-[#696158] leading-6 
+  }
+  .listCard {
+    @apply leading-5 text-base font-normal text-grey-500
+  }
+  .listCard ul{    
+    @apply list-inside    
+  }
+  .listCard ul li::before{
+    content: "\2022";
+    @apply text-[19px] text-green-200 mr-2
+  }
+  .listCardModal ul{
+    @apply py-3
+  }
   .btn:hover {
     @apply opacity-80;
   }
 
   .page-wrapper {
-    @apply relative h-[100vh] overflow-x-hidden overflow-y-auto;
-  }
-
-
+    @apply relative h-[100vh] overflow-x-hidden overflow-y-auto; 
+  } 
+ 
+ 
   .form-control {
-    @apply w-full border resize-none border-stone-200 focus:outline-0  text-gray-900 rounded-lg px-2 py-2 focus:border-blue-900 ;
+    @apply w-full border resize-none border-stone-200 focus:outline-0 appearance-none text-gray-900 rounded-lg px-2 py-2 focus:border-blue-900 ; 
   }
 
     select {
-      @apply bg-white appearance-none;
+      @apply bg-white appearance-none;     
     }
-
+  
     .form-group {
-      @apply relative z-20;
-    }
+      @apply relative z-20;  
+    } 
 
     .form-group svg {
       @apply top-3 text-lg font-bold right-3 absolute text-orange-500;
     }
-
+ 
     .form-group label {
       @apply text-sm
     }
@@ -69,11 +89,11 @@ input[type="checkbox"]:checked ~ svg  {
   }
 
   .modal-inner-wrapper {
-    @apply flex flex-col items-center sticky top-0 z-[200] justify-center min-h-[100vh] w-full p-5 after:bg-white after:opacity-50 after:z-[100] after:absolute after:top-0 after:right-0 after:left-0 after:min-h-full
+    @apply flex flex-col items-center sticky top-0 z-[200] justify-center min-h-[100vh] w-full p-5 after:bg-[#696969] after:opacity-75 after:z-[100] after:absolute after:top-0 after:right-0 after:left-0 after:min-h-full
   }
 
   .modal-body {
-     @apply rounded-xl bg-white  relative z-[200] md:w-[70%] space-y-5; 
+     @apply rounded-xl bg-white  relative z-[200] md:w-[70%] space-y-5 overflow-hidden ; 
   }
 
   
@@ -84,7 +104,10 @@ input[type="checkbox"]:checked ~ svg  {
   .show-modal {
     /*@apply opacity-100 ;*/
   }
-
+  .confirmForm{
+    background:#ff4f00 !important; border-radius:12px; border:none !important;
+    @apply bg-orange-500 rounded-xl text-white 
+  }
   .error {
     @apply text-xs text-red-600
   }
@@ -92,7 +115,7 @@ input[type="checkbox"]:checked ~ svg  {
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;
+  display: none; 
 }
 
 .no-scrollbar {
