@@ -184,7 +184,7 @@ const Register = () => {
 
       const preventInvalidCharacters = (e, length) => {
       		if(e.key != 'Backspace'){
-		      		if(/^[0-9]/.test(e.key) == false || e.target.value.length >= length || e.key == '-' || e.key == '.'|| e.key == '+' || e.key == 'e'){
+		      		if(/^[0-9]/.test(e.key) == false || e.target.value.length >= length || /^[0-9]/.test(e.target.value) == false){
 		      				e.preventDefault();
 		      		}
       		}
