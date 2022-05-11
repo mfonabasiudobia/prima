@@ -43,7 +43,7 @@ const Register = () => {
       ['ownerLastName'] : yup.string().required("Apellido Paterno del titular es necesario"),
       ['ownerMothersLastName'] : yup.string().required("Apellido materno es necesario"),
       ['ownerDocumentType'] : yup.string().required("Tipo de documento es necesario"),
-      ['ownerDocumentNumber'] : yup.string().required("Número de documento es necesario"),
+      ['ownerDocumentNumber'] : yup.string().required("Número de documento es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(8),
       ['ownerPhone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
       ['ownerEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
       ['businessName'] : yup.string().required("Nombre del negocio es necesario"),
@@ -356,7 +356,8 @@ const Register = () => {
 					<div className="form-group">
 						<input 
 							{...register('ownerDocumentNumber')}
-							type="text" 
+							type="number" 
+							onKeyUp={(e) => preventInvalidCharacters(e,'ownerDocumentNumber', 8)}
 							className="form-control" 
 							placeholder="N° Documento" />
 						 <p className="error">{errors['ownerDocumentNumber']?.message}</p>
