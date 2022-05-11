@@ -62,8 +62,7 @@ const Register = () => {
 	 const { register, handleSubmit, getValues, reset, setValue, control, formState: { errors } } = useForm({
         resolver : yupResolver(schema),
         mode : 'all',
-        reValidateMode : 'onChange',
-        shouldUnregister : true
+        reValidateMode : 'onChange'
       });
 
 	 const watchDepartment = useWatch({ control, name : 'department'});
@@ -131,6 +130,9 @@ const Register = () => {
 
 		 	affilaiteInfo.map((item, index) => setValue(ownerInfo[index], getValues(item)));
 
+		 	setValue('relationshipMember', 0);
+
+		 	
 
 	 }
 
