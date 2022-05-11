@@ -48,7 +48,7 @@ const Register = () => {
       ['ownerEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
       ['businessName'] : yup.string().required("Nombre del negocio es necesario"),
       ['category'] : yup.string().required("Categoría es necesario"),
-      ['documentNumber'] : yup.string().required("RUC es necesario"),
+      ['documentNumber'] : yup.string().required("RUC es necesario").matches(/^[0-9]+$/,"Solo ingresa números"),
       ['department'] : yup.string().required("Departamento es necesario"),
       ['province'] : yup.string().required("Provincia es necesaria"),
       ['district'] : yup.string().required("Distrito es necesario"),
@@ -62,7 +62,8 @@ const Register = () => {
 	 const { register, handleSubmit, getValues, reset, setValue, control, formState: { errors } } = useForm({
         resolver : yupResolver(schema),
         mode : 'all',
-        reValidateMode : 'onChange'
+        reValidateMode : 'onChange',
+        shouldUnregister : true
       });
 
 	 const watchDepartment = useWatch({ control, name : 'department'});
@@ -178,6 +179,13 @@ const Register = () => {
 
       }
 
+
+      const preventInvalidCharacters = (e) => {
+      		if(/^[0-9]/.test(e.key) == false){
+      				e.preventDefault();
+      		}
+      }
+
 	return (
 		<>
 		<Loader loading={loading} />
@@ -243,8 +251,8 @@ const Register = () => {
 					<div className="form-group">
 						<input 
 							{...register('affiliateDocumentNumber')}
-							type="number" 
-							min={0}
+							type="text" 
+							onKeyPress={preventInvalidCharacters}
 							className="form-control" 
 							placeholder="N° Documento" />
 						 <p className="error">{errors['affiliateDocumentNumber']?.message}</p>
@@ -253,8 +261,8 @@ const Register = () => {
 					<div className="form-group">
 						<input 
 							{...register('affiliatePhone')}
-							type="number" 
-							min={0}
+							type="text" 
+							onKeyPress={preventInvalidCharacters}
 							className="form-control" 
 							placeholder="Celular" />
 						 <p className="error">{errors['affiliatePhone']?.message}</p>
@@ -350,8 +358,8 @@ const Register = () => {
 					<div className="form-group">
 						<input 
 							{...register('ownerPhone')}
-							type="number" 
-							min={0}
+							type="text" 
+							onKeyPress={preventInvalidCharacters}
 							className="form-control" 
 							placeholder="Celular" />
 						 <p className="error">{errors['ownerPhone']?.message}</p>
@@ -411,6 +419,7 @@ const Register = () => {
 						<input 
 							{...register('documentNumber')}
 							type="text" 
+							onKeyPress={preventInvalidCharacters} 
 							className="form-control" 
 							placeholder="N° RUC/RUS" />
 						<p className="error">{errors['documentNumber']?.message}</p>
@@ -473,8 +482,8 @@ const Register = () => {
 					<div className="form-group">
 						<input 
 							{...register('phone')}
-							type="number" 
-							min={0} 
+							type="text" 
+							onKeyPress={preventInvalidCharacters} 
 							className="form-control" 
 							placeholder="Celular o Whatsapp" />
 							<p className="error">{errors['phone']?.message}</p>
