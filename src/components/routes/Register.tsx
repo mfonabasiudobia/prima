@@ -48,7 +48,7 @@ const Register = () => {
       ['ownerEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
       ['businessName'] : yup.string().required("Nombre del negocio es necesario"),
       ['category'] : yup.string().required("Categoría es necesario"),
-      ['documentNumber'] : yup.string().required("RUC es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
+      ['documentNumber'] : yup.string().required("RUC es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(8),
       ['department'] : yup.string().required("Departamento es necesario"),
       ['province'] : yup.string().required("Provincia es necesaria"),
       ['district'] : yup.string().required("Distrito es necesario"),
@@ -184,7 +184,7 @@ const Register = () => {
 
       const preventInvalidCharacters = (e, length) => {
       		if(e.key != 'Backspace'){
-		      		if(/^[0-9]/.test(e.key) == false || e.target.value.length >= length || /^[0-9]/.test(e.target.value) == false){
+		      		if(/^[0-9]$/.test(e.key) == false || e.target.value.length >= length){
 		      				e.preventDefault();
 		      		}
       		}
@@ -424,7 +424,7 @@ const Register = () => {
 						<input 
 							{...register('documentNumber')}
 							type="number" 
-							onKeyDown={(e) => preventInvalidCharacters(e, 9)} 
+							onKeyDown={(e) => preventInvalidCharacters(e, 8)} 
 							className="form-control" 
 							placeholder="N° RUC/RUS" />
 						<p className="error">{errors['documentNumber']?.message}</p>
