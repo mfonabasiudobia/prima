@@ -22,8 +22,10 @@ const styles = {
 const Register = () => {
 
 	const [locationData, setLocationData] = useState<any>({ departments : [], province : [], district : []});
+	const [locationName, setLocationName] = useState<any>({ department : "", province : "", district : ""});
 	const [loading, setLoading] = useState<boolean>(false);
 	const { departments, province, district } = locationData;
+
 
 	const schema = yup.object().shape({
       ['affiliateName'] : yup.string().required("No ingresaste nombbre").max(50),
@@ -67,6 +69,8 @@ const Register = () => {
 
 	 const watchDepartment = useWatch({ control, name : 'department'});
 	 const watchProvince = useWatch({ control, name : 'province'});
+	 const watchDistrict = useWatch({ control, name : 'district'});
+
 	 const watchBusinessOwner = useWatch({ control, name : 'businessOwner'});
 	 const { reniec } : any = location;
 
@@ -93,9 +97,13 @@ const Register = () => {
 				for(let i = 0;i < reniec.length - 1; i++) {
 
 						if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] != '00')
-																			province.push(reniec[i]);						
+																			province.push(reniec[i]);
+
+						if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] == '00')
+							setLocationName({...locationName, department : reniec[i]['nombre']});
 				}
 
+				 province = province.sort((a,b) => (a.nombre > b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0));
 				 setLocationData({...locationData, province })
 	 	 }
 	 		
@@ -111,14 +119,41 @@ const Register = () => {
 				for(let i = 0;i < reniec.length - 1; i++) {
 
 				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['provincia'] == getValues('province')  && reniec[i]['distrito'] != '00')
-					district.push(reniec[i]);						
+					district.push(reniec[i]);	
+
+				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['provincia'] == getValues('province') && reniec[i]['distrito'] == '00')
+					setLocationName({...locationName, province : reniec[i]['nombre']});
+				
 				}
 
+				 district = district.sort((a,b) => (a.nombre > b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0));
 				 setLocationData({...locationData, district })
 	 	 }
-	 		
+
+	 	 	
 	 	
 	},[watchProvince])
+
+
+	  useEffect(() => {
+
+	 	 if(district.length > 0){
+
+				for(let i = 0;i < reniec.length - 1; i++) {
+
+
+				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['provincia'] == getValues('province') && reniec[i]['distrito'] == getValues('district'))
+					setLocationName({...locationName, district : reniec[i]['nombre']});
+				
+				}
+	 	 }
+
+
+	},[watchDistrict])
+
+
+
+	 
 
 
 	 useEffect(() => {
@@ -141,12 +176,13 @@ const Register = () => {
 
 
       const handleForm = async (data, e) => {
-
+      		alert(JSON.stringify({...data, department : locationName.department, district : locationName.district, province : locationName.province }))
+      		return;
       		setLoading(!loading)
   			axios({
   				url: "comunidad-prima/affiliate-prima",
   				method: 'POST',
-  				data : data 
+  				data : {...data, department : locationName.department, district : locationName.district, province : locationName.province } 		
   			})
   			.then((res) => { 
   					setLoading(false)
