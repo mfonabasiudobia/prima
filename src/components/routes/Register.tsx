@@ -16,7 +16,9 @@ const styles = {
 	form : `grid grid-cols-1 md:grid-cols-3 gap-5`,
 	formHeader : `col-span-1 md:col-span-3 text-green-200 text-baseEx md:text-lg mt-4`,
 	spanAll : `col-span-1 md:col-span-3`,
-	submit : `rounded-lg px-4 py-2 text-baseEx bg-orange-500 font-bold text-white flex items-center space-x-2`
+	submit : `rounded-lg px-4 py-2 text-baseEx bg-orange-500 font-bold text-white flex items-center space-x-2`,
+	btnBack : `rounded-lg px-4 py-2 text-baseEx bg-orange-500 font-bold text-white flex items-center space-x-2 inline-block`,
+	contBack : 'inline-block '
 }
 
 const Register = () => {
@@ -26,14 +28,13 @@ const Register = () => {
 	const [loading, setLoading] = useState<boolean>(false);
 	const { departments, province, district } = locationData;
 
-
 	const schema = yup.object().shape({
-      ['affiliateName'] : yup.string().required("No ingresaste nombbre").max(50),
-      ['affiliateLastName'] : yup.string().required("No ingresaste apellido pterno").max(50),
-      ['affiliateMothersLastName'] : yup.string().required("No ingresaste apellido materno").max(50),
+      ['affiliateName'] : yup.string().required("Debes ingresar tu nombre").max(50,'Ingresa un nombre válido'),
+      ['affiliateLastName'] : yup.string().required("Debes ingresar apellido paterno").max(50,'Ingresa un apellido válido'),
+      ['affiliateMothersLastName'] : yup.string().required("Debes ingresar apellido materno").max(50,'Ingresa un apellido válido'),
       ['affiliateDocumentType'] : yup.string().required("Tipo de documento es obligatorio"),
-      ['affiliateDocumentNumber'] : yup.string().required("Documento es obligatorio").matches(/^[0-9]+$/,"Solo ingresa números").length(8),
-      ['affiliatePhone'] : yup.string().required("Teléfono es obligatorio").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
+      ['affiliateDocumentNumber'] : yup.string().required("Documento es obligatorio").matches(/^[0-9]+$/,"Solo ingresa números").length(8,"Debe tener solo 8 números"),
+      ['affiliatePhone'] : yup.string().required("Teléfono es obligatorio").matches(/^[0-9]+$/,"Solo ingresa números").length(9,"Debe tener solo 9 números"),
       ['businessOwner'] : yup.boolean().required(),
       ['relationshipMember'] : yup.string().when(['businessOwner'], {
       	is : true,
@@ -45,19 +46,19 @@ const Register = () => {
       ['ownerLastName'] : yup.string().required("Apellido Paterno del titular es necesario"),
       ['ownerMothersLastName'] : yup.string().required("Apellido materno es necesario"),
       ['ownerDocumentType'] : yup.string().required("Tipo de documento es necesario"),
-      ['ownerDocumentNumber'] : yup.string().required("Número de documento es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(8),
-      ['ownerPhone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
+      ['ownerDocumentNumber'] : yup.string().required("Número de documento es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(8,"Debe tener solo 8 números"),
+      ['ownerPhone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9,"Debe tener solo 9 números"),
       ['ownerEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
       ['businessName'] : yup.string().required("Nombre del negocio es necesario"),
       ['category'] : yup.string().required("Categoría es necesario"),
-      ['documentNumber'] : yup.string().required("RUC es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(8),
+      ['documentNumber'] : yup.string().required("RUC es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(11,"Debe tener solo 11 números"),
       ['department'] : yup.string().required("Departamento es necesario"),
       ['province'] : yup.string().required("Provincia es necesaria"),
       ['district'] : yup.string().required("Distrito es necesario"),
       ['address'] : yup.string().required("Dirección es necesaria"),
-      ['shortDescription'] : yup.string().required("Debes agregar una descripción del negocio").max(2000),
-      ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000),
-      ['phone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9),
+      ['shortDescription'] : yup.string().required("Debes agregar una descripción del negocio").max(2000,"Debe tener como máximo 2000 caracteres"),
+      ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000,"Debe tener como máximo 2000 caracteres"),
+      ['phone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9,"Debe tener solo 9 números"),
       ['affiliateEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
      })
 
@@ -70,7 +71,6 @@ const Register = () => {
 	 const watchDepartment = useWatch({ control, name : 'department'});
 	 const watchProvince = useWatch({ control, name : 'province'});
 	 const watchDistrict = useWatch({ control, name : 'district'});
-
 	 const watchBusinessOwner = useWatch({ control, name : 'businessOwner'});
 	 const { reniec } : any = location;
 
@@ -97,9 +97,9 @@ const Register = () => {
 				for(let i = 0;i < reniec.length - 1; i++) {
 
 						if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] != '00')
-																			province.push(reniec[i]);
+																			province.push(reniec[i]);	
 
-						if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] == '00')
+				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] == '00')
 							setLocationName({...locationName, department : reniec[i]['nombre']});
 				}
 
@@ -129,13 +129,12 @@ const Register = () => {
 				 district = district.sort((a,b) => (a.nombre > b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0));
 				 setLocationData({...locationData, district })
 	 	 }
-
-	 	 	
+	 		
 	 	
 	},[watchProvince])
 
 
-	  useEffect(() => {
+	   useEffect(() => {
 
 	 	 if(district.length > 0){
 
@@ -150,11 +149,6 @@ const Register = () => {
 
 
 	},[watchDistrict])
-
-
-
-	 
-
 
 	 useEffect(() => {
 
@@ -176,13 +170,12 @@ const Register = () => {
 
 
       const handleForm = async (data, e) => {
-      		alert(JSON.stringify({...data, department : locationName.department, district : locationName.district, province : locationName.province }))
-      		return;
+
       		setLoading(!loading)
   			axios({
-  				url: "comunidad-prima/affiliate-prima",
+  				url: "bff-formulario-comunidad/affiliate-prima",
   				method: 'POST',
-  				data : {...data, department : locationName.department, district : locationName.district, province : locationName.province } 		
+  				data : {...data, department : locationName.department, district : locationName.district, province : locationName.province }  
   			})
   			.then((res) => { 
   					setLoading(false)
@@ -234,11 +227,18 @@ const Register = () => {
 		<Loader loading={loading} />
 		<section className="bcontainer">
 			<div className={styles.wrapper}>
+				<span className={styles.contBack}><a href='/' className={styles.btnBack}>Regresar</a></span>
 				
 
                         <header className="space-y-3">
                                 <h1 className={styles.title}>Regístrate en Comunidad Prima</h1>
                                 <p>Ingresa los datos solicitados y acepta nuestros términos y condiciones:</p>
+								<div className="listCard">
+									<ul>
+								<li>Recuerda que solo los afiliados a Prima pueden hacer el registro.</li>
+								<li>Sólo puedes registrar a tus familiares directos (Padres, Cónyuge, Hijos y Hermanos) siempre y cuando sean mayores de edad.</li>
+								<li>El negocio debe ser formal debes tener RUC|RUS.</li>
+</ul></div>
                          </header>
 
 				<form className={styles.form} onSubmit={handleSubmit(handleForm)}>
@@ -438,7 +438,6 @@ const Register = () => {
 							{...register('category')}
 							className="form-control" >
 								<option hidden selected>Categoría</option>
-							<option>Nombers</option>
 							<option value="1">Calzado</option>
 							<option value="2">Comidas y postres</option>
 							<option value="3">Decoraciones, fiestas y toldos</option>
@@ -463,7 +462,7 @@ const Register = () => {
 						<input 
 							{...register('documentNumber')}
 							type="number" 
-							onKeyUp={(e) => preventInvalidCharacters(e,'documentNumber', 8)} 
+							onKeyUp={(e) => preventInvalidCharacters(e,'documentNumber', 11)} 
 							className="form-control" 
 							placeholder="N° RUC/RUS" />
 						<p className="error">{errors['documentNumber']?.message}</p>
@@ -474,7 +473,7 @@ const Register = () => {
 						<select 
 							{...register('department')}
 							className="form-control">
-							<option>Departamento</option>
+							<option hidden selected>Departamento</option>
 							{departments.map((item, index) => <option key={index} value={item['departamento']}>{item['nombre']}</option>)}
 						</select>
 						<p className="error">{errors['department']?.message}</p>
@@ -487,7 +486,7 @@ const Register = () => {
 							{...register('province')}
 							className="form-control">
 							{province.map((item, index) => <option key={index} value={item['provincia']}>{item['nombre']}</option>)}
-							<option>Provincia</option>
+							<option hidden selected>Provincia</option>
 						</select>
 						<p className="error">{errors['province']?.message}</p>
 					</div>
@@ -499,7 +498,7 @@ const Register = () => {
 							{...register('district')}
 							className="form-control" >
 							{district.map((item, index) => <option key={index} value={item['distrito']}>{item['nombre']}</option>)}
-							<option>Distrito</option>
+							<option hidden selected>Distrito</option>
 						</select>
 						<p className="error">{errors['district']?.message}</p>
 					</div>

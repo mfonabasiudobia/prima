@@ -19,7 +19,8 @@ body {
 }
 
 h1, h2, h3 {
-   font-family: 'Fs Emeric' !important;   
+   font-family: 'Fs Emeric' !important;
+   font-weight: bold !important;
 }
 
 
@@ -27,6 +28,11 @@ h1, h2, h3 {
 input[type="checkbox"]:checked ~ svg  {
     @apply block;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
  
 @layer components {
   .home-bg{

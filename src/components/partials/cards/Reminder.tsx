@@ -6,7 +6,7 @@ const styles = {
 	wrapper : `bg-white flex items-center px-7 py-7 shadow-lg  rounded-xl`,
 	wrapperRight : `flex flex-col justify-center flex-1 items-start px-4`,
 	title : `text-lg font-bold text-green-200`,
-	paragraph : `textop font-light xs:text-[16px]`,
+	paragraph : `textop font-light xs:text-[16px] pt-2`,
 	icnComunidad : 'xs:hidden',
 	textop : '',
 	bcontainer: 'bg-white items-center md:max-w-[1294px] sm:w-[100%] xs:w-[100%]  mx-auto -mt-10 rounded-3xl relative pt-8',
