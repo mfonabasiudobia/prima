@@ -57,7 +57,10 @@ const Register = () => {
       ['district'] : yup.string().required("Distrito es necesario"),
       ['address'] : yup.string().required("Dirección es necesaria"),
       ['shortDescription'] : yup.string().required("Debes agregar una descripción del negocio").max(2000,"Debe tener como máximo 2000 caracteres"),
-      ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000,"Debe tener como máximo 2000 caracteres"),
+      ['product1'] : yup.string().required("Debes agregar una descripción del negocio").max(80,"Debe tener como máximo 80 caracteres"),
+      ['product2'] : yup.string().required("Debes agregar una descripción del negocio").max(80,"Debe tener como máximo 80 caracteres"),
+      ['product3'] : yup.string().required("Debes agregar una descripción del negocio").max(80,"Debe tener como máximo 80 caracteres"),
+      // ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000,"Debe tener como máximo 2000 caracteres"),
       ['phone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9,"Debe tener solo 9 números"),
       ['affiliateEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
      })
@@ -96,7 +99,7 @@ const Register = () => {
 
 				for(let i = 0;i < reniec.length - 1; i++) {
 
-						if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] != '00')
+				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] != '00')
 																			province.push(reniec[i]);	
 
 				if(reniec[i]['departamento'] == getValues('department') && reniec[i]['distrito'] == '00' && reniec[i]['provincia'] == '00')
@@ -152,22 +155,19 @@ const Register = () => {
 
 	 useEffect(() => {
 
-	 if(watchBusinessOwner == 1){
+
 		 	//Auto Update userInfomation if yes
 		 	let affilaiteInfo = ["affiliateName","affiliateLastName","affiliateMothersLastName","affiliateDocumentType","affiliateDocumentNumber","affiliatePhone","affiliateEmail"];
 		 	let ownerInfo = ["ownerName","ownerLastName","ownerMothersLastName","ownerDocumentType","ownerDocumentNumber","ownerPhone","ownerEmail"];
 
-		 	affilaiteInfo.map((item, index) => setValue(ownerInfo[index], getValues(item)));
+		 	affilaiteInfo.map((item, index) => setValue(ownerInfo[index],watchBusinessOwner == 1 ? getValues(item) : ''));
 
-		 	setValue('relationshipMember', 0);
+		 	setValue('relationshipMember', watchBusinessOwner == 1 ? 0 : "");
 
 		 	
 
-	 }
-
 	 },[watchBusinessOwner])
 	 
-
 
       const handleForm = async (data, e) => {
 
@@ -175,7 +175,7 @@ const Register = () => {
   			axios({
   				url: "bff-formulario-comunidad/affiliate-prima",
   				method: 'POST',
-  				data : {...data, department : locationName.department, district : locationName.district, province : locationName.province }  
+  				data : {...data, mainProducts : `${getValues('product1')}  ${getValues('product3')} ${getValues('product3')}`, department : locationName.department, district : locationName.district, province : locationName.province }  
   			})
   			.then((res) => { 
   					setLoading(false)
@@ -332,10 +332,14 @@ const Register = () => {
 						<input type="radio" id='no' defaultValue={0} {...register('businessOwner')} className="accent-orange-500" /> 
 					</div>
 
+					
+
 					<div className="form-group ">
 						<BsChevronDown />
-						<select {...register('relationshipMember')} className="form-control" >
-						<option hidden selected>Vínculo con el afiliado</option>
+						<select {...register('relationshipMember')} 
+						className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+						disabled={getValues('businessOwner') == 1 ? true : false}>
+						<option hidden selected value="">Vínculo con el afiliado</option>
 							<option value="0">Titular</option>
 							<option value="1">Cónyuge</option>
 							<option value="2">Hijo (a)</option>
@@ -349,7 +353,8 @@ const Register = () => {
 						<input 
 							{...register('ownerName')}
 							type="text" 
-							className="form-control" 
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false}
 							placeholder="Nombres" />
 						 <p className="error">{errors['ownerName']?.message}</p>
 					</div>
@@ -358,7 +363,8 @@ const Register = () => {
 						<input 
 							{...register('ownerLastName')}
 							type="text" 
-							className="form-control" 
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false}
 							placeholder="Apellido Paterno" />
 						 <p className="error">{errors['ownerLastName']?.message}</p>
 					</div>
@@ -367,7 +373,8 @@ const Register = () => {
 						<input 
 							{...register('ownerMothersLastName')}
 							type="text" 
-							className="form-control" 
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false}
 							placeholder="Apellido Materno" />
 						 <p className="error">{errors['ownerMothersLastName']?.message}</p>
 					</div>
@@ -376,8 +383,10 @@ const Register = () => {
 						<BsChevronDown />
 						<select 
 							{...register('ownerDocumentType')}
-							className="form-control">
-								<option hidden selected>Tipo de Documento</option>
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false}
+							>
+								<option hidden selected value="">Tipo de Documento</option>
 							<option value="1">D.N.I</option>
 							<option value="2">Pasaporte</option>
 							<option value="3">Carnet de extranjería</option>
@@ -394,7 +403,8 @@ const Register = () => {
 							{...register('ownerDocumentNumber')}
 							type="number" 
 							onKeyUp={(e) => preventInvalidCharacters(e,'ownerDocumentNumber', 8)}
-							className="form-control" 
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false} 
 							placeholder="N° Documento" />
 						 <p className="error">{errors['ownerDocumentNumber']?.message}</p>
 					</div>
@@ -404,7 +414,8 @@ const Register = () => {
 							{...register('ownerPhone')}
 							type="number" 
 							onKeyUp={(e) => preventInvalidCharacters(e,'ownerPhone', 9)}
-							className="form-control" 
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false}
 							placeholder="Celular" />
 						 <p className="error">{errors['ownerPhone']?.message}</p>
 					</div>
@@ -413,7 +424,8 @@ const Register = () => {
 						<input 
 							{...register('ownerEmail')}
 							type="text" 
-							className="form-control" 
+							className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
+							disabled={getValues('businessOwner') == 1 ? true : false} 
 							placeholder="Email" />
 						 <p className="error">{errors['ownerEmail']?.message}</p>
 					</div>
@@ -515,11 +527,29 @@ const Register = () => {
 						<p className="error">{errors['shortDescription']?.message}</p>
 					</div>
 
-					<div className={`${styles.spanAll}`}>
-						<textarea 
-							{...register('mainProducts')}
-							className="form-control" placeholder="Principales productos" rows={5}></textarea>
-							<p className="error">{errors['mainProducts']?.message}</p>
+					<div className={`${styles.spanAll} grid md:grid-cols-3 gap-5`}>
+
+						<div className="form-group">
+							<textarea 
+							{...register('product1')}
+							className="form-control" placeholder="Product 1" rows={5}></textarea>
+							<p className="error">{errors['product1']?.message}</p>
+						</div>
+
+						<div className="form-group">
+							<textarea 
+							{...register('product2')}
+							className="form-control" placeholder="Product 2" rows={5}></textarea>
+							<p className="error">{errors['product2']?.message}</p>
+						</div>
+
+						<div className="form-group">
+							<textarea 
+							{...register('product3')}
+							className="form-control" placeholder="Product 3" rows={5}></textarea>
+							<p className="error">{errors['product3']?.message}</p>
+						</div>
+
 					</div>
 
 					<div className="form-group">
