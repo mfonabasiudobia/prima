@@ -26,10 +26,10 @@ const Footer = () => {
 					<img src="/svgs/logo.svg" className="h-10 w-auto" />	
 
 				 <div className={styles.socialsWrapper}>
-					<a href="#" className={styles.socialIcon}><FaFacebookF size={15} /></a>	
-					<a href="#" className={styles.socialIcon}><BsInstagram size={15} /></a>	
-					<a href="#" className={styles.socialIcon}><BsFillPlayFill size={15} /></a>	
-					<a href="#" className={styles.socialIcon}><FaLinkedinIn size={15} /></a>	
+					<a href="https://www.facebook.com/PrimaAFP/" target="_blank"  rel="noreferrer" className={styles.socialIcon}><FaFacebookF size={15} /></a>	
+					<a href="https://www.instagram.com/primaafp/"  target="_blank"  rel="noreferrer" className={styles.socialIcon}><BsInstagram size={15} /></a>	
+					<a href="https://www.youtube.com/channel/UCU6o1n74cGuZqL555IDlkwg"  rel="noreferrer" target="_blank" className={styles.socialIcon}><BsFillPlayFill size={15} /></a>	
+					<a href="https://www.linkedin.com/company/prima-afp/"  target="_blank" rel="noreferrer" className={styles.socialIcon}><FaLinkedinIn size={15} /></a>	
 				 </div>			
 				</section>
 

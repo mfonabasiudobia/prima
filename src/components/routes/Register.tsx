@@ -8,9 +8,11 @@ import location from "ubigeo-peru";
 import axios from "../../utils/axios";
 import Loader from "../partials/Loader";
 import Swal from 'sweetalert2'
+import ReCAPTCHA from "react-google-recaptcha";
 
 const styles = {
 	title : `text-xl font-bold text-orange-500`,
+	subTitle : `text-lg font-bold text-grey-500`,
 	orangeLink : 'text-orange',
 	wrapper : `container space-y-7 pt-10 text-baseEx text-grey-500 mb-20`,
 	form : `grid grid-cols-1 md:grid-cols-3 gap-5`,
@@ -26,6 +28,7 @@ const Register = () => {
 	const [locationData, setLocationData] = useState<any>({ departments : [], province : [], district : []});
 	const [locationName, setLocationName] = useState<any>({ department : "", province : "", district : ""});
 	const [loading, setLoading] = useState<boolean>(false);
+	const [recaptchaStatus, setRecaptchaStatus] = useState<boolean>(false);
 	const { departments, province, district } = locationData;
 
 	const schema = yup.object().shape({
@@ -57,9 +60,9 @@ const Register = () => {
       ['district'] : yup.string().required("Distrito es necesario"),
       ['address'] : yup.string().required("Dirección es necesaria"),
       ['shortDescription'] : yup.string().required("Debes agregar una descripción del negocio").max(2000,"Debe tener como máximo 2000 caracteres"),
-      ['product1'] : yup.string().required("Debes agregar una descripción del negocio").max(80,"Debe tener como máximo 80 caracteres"),
-      ['product2'] : yup.string().required("Debes agregar una descripción del negocio").max(80,"Debe tener como máximo 80 caracteres"),
-      ['product3'] : yup.string().required("Debes agregar una descripción del negocio").max(80,"Debe tener como máximo 80 caracteres"),
+      ['product1'] : yup.string().max(80,"Debe tener como máximo 80 caracteres"),
+      ['product2'] : yup.string().max(80,"Debe tener como máximo 80 caracteres"),
+      ['product3'] : yup.string().max(80,"Debe tener como máximo 80 caracteres"),
       // ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000,"Debe tener como máximo 2000 caracteres"),
       ['phone'] : yup.string().required("Teléfono es necesario").matches(/^[0-9]+$/,"Solo ingresa números").length(9,"Debe tener solo 9 números"),
       ['affiliateEmail'] : yup.string().required("Email es necesario").email("Email incorrecto"),
@@ -170,12 +173,13 @@ const Register = () => {
 	 
 
       const handleForm = async (data, e) => {
+      		if(!recaptchaStatus) return; //dont execute if not verify
 
       		setLoading(!loading)
   			axios({
   				url: "bff-formulario-comunidad/affiliate-prima",
   				method: 'POST',
-  				data : {...data, mainProducts : `${getValues('product1')}  ${getValues('product3')} ${getValues('product3')}`, department : locationName.department, district : locationName.district, province : locationName.province }  
+  				data : {...data, mainProducts : `${getValues('product1')} \n ${getValues('product2')} \n ${getValues('product3')}`, department : locationName.department, district : locationName.district, province : locationName.province }  
   			})
   			.then((res) => { 
   					setLoading(false)
@@ -220,6 +224,15 @@ const Register = () => {
 
       		}
 
+      }
+
+      const handleRecaptcha = (value) => {
+
+      		if(value != undefined){
+				setRecaptchaStatus(true)
+      		}else{
+      			setRecaptchaStatus(false)
+      		}
       }
 
 	return (
@@ -340,7 +353,7 @@ const Register = () => {
 						className={`form-control ${getValues('businessOwner') == 1 ? 'cursor-not-allowed' : ''}`} 
 						disabled={getValues('businessOwner') == 1 ? true : false}>
 						<option hidden selected value="">Vínculo con el afiliado</option>
-							<option value="0">Titular</option>
+							<option value="0" className={`${getValues('businessOwner') == 0 && 'hidden'}`}>Titular</option>
 							<option value="1">Cónyuge</option>
 							<option value="2">Hijo (a)</option>
 							<option value="3">Hermano (a)</option>
@@ -527,30 +540,22 @@ const Register = () => {
 						<p className="error">{errors['shortDescription']?.message}</p>
 					</div>
 
-					<div className={`${styles.spanAll} grid md:grid-cols-3 gap-5`}>
-
-						<div className="form-group">
-							<textarea 
-							{...register('product1')}
-							className="form-control" placeholder="Product 1" rows={5}></textarea>
-							<p className="error">{errors['product1']?.message}</p>
-						</div>
-
-						<div className="form-group">
-							<textarea 
-							{...register('product2')}
-							className="form-control" placeholder="Product 2" rows={5}></textarea>
-							<p className="error">{errors['product2']?.message}</p>
-						</div>
-
-						<div className="form-group">
-							<textarea 
-							{...register('product3')}
-							className="form-control" placeholder="Product 3" rows={5}></textarea>
-							<p className="error">{errors['product3']?.message}</p>
-						</div>
-
+					<h4 className={styles.subTitle}>
+					Productos Destacados
+					</h4>
+					<div className="form-group md:col-span-3">
+						<input type="text" {...register('product1')} className="form-control" placeholder="Producto 1" />
+						<p className="error">{errors['product1']?.message}</p>
 					</div>
+					<div className="form-group md:col-span-3">
+						<input type="text" {...register('product2')} className="form-control" placeholder="Producto 2" />
+						<p className="error">{errors['product2']?.message}</p>
+					</div>
+					<div className="form-group md:col-span-3">
+						<input type="text" {...register('product3')} className="form-control" placeholder="Producto 3" />
+						<p className="error">{errors['product3']?.message}</p>
+					</div>
+					
 
 					<div className="form-group">
 						<input 
@@ -590,12 +595,20 @@ const Register = () => {
 						<p className="error">{errors['privacyPolicy']?.message}</p>
 					</div>
 
+					<div className={`${styles.spanAll} flex items-center space-x-2`}>
+						<ReCAPTCHA
+						    sitekey="6LemwRMgAAAAAOBYI3XepKMkuCF5mgjqxsdFbrym"
+						    onChange={handleRecaptcha}
+						    onExpired={handleRecaptcha}
+						    onErrored={handleRecaptcha}
+						  />
+					</div>
+
 					 <div className={`${styles.spanAll} flex justify-end items-center`}>
                             <button type="submit" className={styles.submit}>
                                 Registrar mi negocio
                           	</button>
                       </div>
-
 				</form>
 			</div>
 
