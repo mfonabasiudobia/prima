@@ -226,6 +226,13 @@ const Register = () => {
 
       }
 
+
+      const preventMaxChar = (e, name, length) => {
+      		var str = e.target.value;
+      		setValue(name,str.slice(0, length));
+      }
+
+
       const handleRecaptcha = (value) => {
 
       		if(value != undefined){
@@ -544,15 +551,21 @@ const Register = () => {
 					Productos Destacados
 					</h4>
 					<div className="form-group md:col-span-3">
-						<input type="text" {...register('product1')} className="form-control" placeholder="Producto 1" />
+						<input type="text" 
+							onKeyUp={(e) => preventMaxChar(e,'product1', 80)} 
+							{...register('product1')} className="form-control" placeholder="Producto 1" />
 						<p className="error">{errors['product1']?.message}</p>
 					</div>
 					<div className="form-group md:col-span-3">
-						<input type="text" {...register('product2')} className="form-control" placeholder="Producto 2" />
+						<input type="text" 
+							onKeyUp={(e) => preventMaxChar(e,'product2', 80)} 
+							{...register('product2')} className="form-control" placeholder="Producto 2" />
 						<p className="error">{errors['product2']?.message}</p>
 					</div>
 					<div className="form-group md:col-span-3">
-						<input type="text" {...register('product3')} className="form-control" placeholder="Producto 3" />
+						<input type="text" 
+							onKeyUp={(e) => preventMaxChar(e,'product3', 80)} 
+							{...register('product3')} className="form-control" placeholder="Producto 3" />
 						<p className="error">{errors['product3']?.message}</p>
 					</div>
 					
