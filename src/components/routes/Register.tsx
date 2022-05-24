@@ -60,7 +60,7 @@ const Register = () => {
       ['district'] : yup.string().required("Distrito es necesario"),
       ['address'] : yup.string().required("Dirección es necesaria"),
       ['shortDescription'] : yup.string().required("Debes agregar una descripción del negocio").max(2000,"Debe tener como máximo 2000 caracteres"),
-      ['product1'] : yup.string().max(80,"Debe tener como máximo 80 caracteres"),
+      ['product1'] : yup.string().required("Producto is required").max(80,"Debe tener como máximo 80 caracteres"),
       ['product2'] : yup.string().max(80,"Debe tener como máximo 80 caracteres"),
       ['product3'] : yup.string().max(80,"Debe tener como máximo 80 caracteres"),
       // ['mainProducts'] : yup.string().required("Debes indicar los productos que vendes").max(2000,"Debe tener como máximo 2000 caracteres"),
