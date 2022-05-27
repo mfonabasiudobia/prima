@@ -29,6 +29,7 @@ const Register = () => {
 	const [locationName, setLocationName] = useState<any>({ department : "", province : "", district : ""});
 	const [loading, setLoading] = useState<boolean>(false);
 	const [recaptchaStatus, setRecaptchaStatus] = useState<boolean>(false);
+	const [recaptcha, setRecaptcha] = useState<any>("");
 	const { departments, province, district } = locationData;
 
 	const schema = yup.object().shape({
@@ -179,7 +180,10 @@ const Register = () => {
   			axios({
   				url: "bff-formulario-comunidad/affiliate-prima",
   				method: 'POST',
-  				data : {...data, mainProducts : `${getValues('product1')} \n ${getValues('product2')} \n ${getValues('product3')}`, department : locationName.department, district : locationName.district, province : locationName.province }  
+  				data : {...data, mainProducts : `${getValues('product1')} \n ${getValues('product2')} \n ${getValues('product3')}`, department : locationName.department, district : locationName.district, province : locationName.province },
+  				headers : {
+  					"g-recaptcha-response" : recaptcha
+  				}
   			})
   			.then((res) => { 
   					setLoading(false)
@@ -237,6 +241,7 @@ const Register = () => {
 
       		if(value != undefined){
 				setRecaptchaStatus(true)
+				setRecaptcha(value);
       		}else{
       			setRecaptchaStatus(false)
       		}
