@@ -25,7 +25,8 @@ const styles = {
     locationName :  `font-bold`,
     infoDetail : 'text-grey-500 text-sm',
     legalInfo : 'pl-2 xs:text-[12px]',
-    bodyDetail: 'card-modal-content listCard listCardModal text-baseEx xs:text-sm'
+    bodyDetail: 'card-modal-content listCard listCardModal text-baseEx xs:text-sm',
+    imageRefer: 'absolute bottom-2 right-4 text-white text-[12px] z-10'
 }
 
 const Details = ({ isOpen, setIsOpen, details } : any) => {
@@ -36,6 +37,7 @@ const Details = ({ isOpen, setIsOpen, details } : any) => {
                   
                   <section className={styles.topHeader}>
                       <div className={styles.container}>
+                      <span className={styles.imageRefer}>* La imagen es referencial</span>
                           
                           <button 
                             onClick={() => setIsOpen()}

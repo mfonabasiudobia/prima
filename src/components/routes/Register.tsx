@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { NavLink } from "react-router-dom";
-import { BsChevronDown } from "react-icons/bs";
+import { BsChevronDown,BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import { useForm, useWatch } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -19,7 +19,9 @@ const styles = {
 	formHeader : `col-span-1 md:col-span-3 text-green-200 text-baseEx md:text-lg mt-4`,
 	spanAll : `col-span-1 md:col-span-3`,
 	submit : `rounded-lg px-4 py-2 text-baseEx bg-orange-500 font-bold text-white flex items-center space-x-2`,
-	btnBack : `rounded-lg px-4 py-2 text-baseEx bg-orange-500 font-bold text-white flex items-center space-x-2 inline-block`,
+	btnBack : `rounded-lg py-2 text-baseEx text-grey-500 flex items-center inline-block font-bold`,
+	arrowBack : `text-orange-500 pr-4`,
+	linkOrange : `text-grey-500 underline hover:text-orange-500`,
 	contBack : 'inline-block '
 }
 
@@ -193,11 +195,11 @@ const Register = () => {
   					Swal.fire({
 					  title: 'Registro Exitoso', 
 					  icon: 'success',
-					  confirmButtonText: 'Regresar',
+					  confirmButtonText:'<a href="./" class="">Regresar</a>',
 					  customClass: {
 						confirmButton: 'confirmForm'
 						}
-					})	
+					})
 
   			})
   			.catch((e) => {
@@ -212,6 +214,7 @@ const Register = () => {
 					  customClass: {
 						confirmButton: 'confirmForm'
 						}
+						
 					})
 					
   			});
@@ -252,7 +255,7 @@ const Register = () => {
 		<Loader loading={loading} />
 		<section className="bcontainer">
 			<div className={styles.wrapper}>
-				<span className={styles.contBack}><a href='/' className={styles.btnBack}>Regresar</a></span>
+				<span className={styles.contBack}><a href='/' className={styles.btnBack}><span className={styles.arrowBack}><BsChevronLeft size={20} /></span> Regresar</a></span>
 				
 
                         <header className="space-y-3">
@@ -261,8 +264,8 @@ const Register = () => {
 								<div className="listCard">
 									<ul>
 								<li>Recuerda que solo los afiliados a Prima pueden hacer el registro.</li>
-								<li>Sólo puedes registrar a tus familiares directos (Padres, Cónyuge, Hijos y Hermanos) siempre y cuando sean mayores de edad.</li>
-								<li>El negocio debe ser formal debes tener RUC|RUS.</li>
+								<li>Sólo se podrán registrar negocios propios y de familiares directos (Padres, Cónyuge, Hijos y Hermanos). Deberán ser mayores de edad.</li>
+								<li>El negocio debe ser formal con RUC o RUS.</li>
 </ul></div>
                          </header>
 
@@ -369,7 +372,7 @@ const Register = () => {
 							<option value="1">Cónyuge</option>
 							<option value="2">Hijo (a)</option>
 							<option value="3">Hermano (a)</option>
-							<option value="4">Padre / Madr</option>
+							<option value="4">Padre / Madre</option>
 						</select>
 						 <p className="error">{errors['relationshipMember']?.message}</p>
 					</div>
@@ -603,13 +606,13 @@ const Register = () => {
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
 						<input type="checkbox" {...register('acceptTerms')} className="accent-orange-500"  />
-						<label>Acepto los <a href="#">términos y condiciones</a></label>
+						<label>Acepto los <a href="./files/clausulas.pdf" target="_blank" className={styles.linkOrange}>términos y condiciones</a></label>
 						<p className="error">{errors['acceptTerms']?.message}</p>
 					</div>
 
 					<div className={`${styles.spanAll} flex items-center space-x-2`}>
 						<input type="checkbox" {...register('privacyPolicy')} className="accent-orange-500"  />
-						<label>Acepto los <a href="#" className="orange-">términos en la Política de Privacidad para el Tratamiento de Datos Personales</a>.</label>
+						<label>Acepto los <a href="./files/terminos.pdf" target="_blank" className={styles.linkOrange}>términos en la Política de Privacidad para el Tratamiento de Datos Personales</a>.</label>
 						<p className="error">{errors['privacyPolicy']?.message}</p>
 					</div>
 
@@ -623,8 +626,8 @@ const Register = () => {
 					</div>
 
 					 <div className={`${styles.spanAll} flex justify-end items-center`}>
-                            <button type="submit" className={styles.submit}>
-                                Registrar mi negocio
+                            <button type="submit" className={`${styles.submit} ${errors.privacyPolicy || errors.acceptTerms || !recaptchaStatus ? 'bg-gray-300' : '' }`} disabled={(errors.privacyPolicy || errors.acceptTerms || !recaptchaStatus)}>
+                                Enviar Solicitud
                           	</button>
                       </div>
 				</form>
